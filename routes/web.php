@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VacanteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
+// incluimos las rutas de larabel brezze las cuales contienen las rutas de autenticacion y registro
+require __DIR__ . '/auth.php';
+
 Route::get( '/', function () {
     return view( 'welcome' );
 } );
@@ -21,6 +25,5 @@ Route::get( '/dashboard', function () {
     return view( 'dashboard' );
 } )->middleware( ['auth', 'verified'] )->name( 'dashboard' );
 
-require __DIR__ . '/auth.php';
-
-// Auth::routes( ['verify' => true] );
+// Ruta de vacantes
+Route::get( '/vacantes', [VacanteController::class, 'index'] )->name( 'vacantes.index' );

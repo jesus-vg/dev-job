@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class VacanteController extends Controller
 {
+
+    public function __construct()
+    {
+        // indicamos que solo los usuarios autenticados y verificados pueden acceder a los metodos de este controlador
+        $this->middleware( ['auth', 'verified'] );
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +21,9 @@ class VacanteController extends Controller
      */
     public function index()
     {
-        //
+        return view( 'vacantes.index', [
+            // 'vacantes' => Vacante::all(),
+        ] );
     }
 
     /**
@@ -33,7 +42,7 @@ class VacanteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( Request $request )
     {
         //
     }
@@ -44,7 +53,7 @@ class VacanteController extends Controller
      * @param  \App\Models\Vacante  $vacante
      * @return \Illuminate\Http\Response
      */
-    public function show(Vacante $vacante)
+    public function show( Vacante $vacante )
     {
         //
     }
@@ -55,7 +64,7 @@ class VacanteController extends Controller
      * @param  \App\Models\Vacante  $vacante
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vacante $vacante)
+    public function edit( Vacante $vacante )
     {
         //
     }
@@ -67,8 +76,10 @@ class VacanteController extends Controller
      * @param  \App\Models\Vacante  $vacante
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vacante $vacante)
-    {
+    public function update(
+        Request $request,
+        Vacante $vacante
+    ) {
         //
     }
 
@@ -78,7 +89,7 @@ class VacanteController extends Controller
      * @param  \App\Models\Vacante  $vacante
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vacante $vacante)
+    public function destroy( Vacante $vacante )
     {
         //
     }
