@@ -21,10 +21,18 @@ return new class extends Migration
             $table->timestamps();
         } );
 
+        Schema::create( 'experiencias', function ( Blueprint $table ) {
+            $table->id();
+            $table->string( 'nombre' );
+            $table->timestamps();
+        } );
+
         Schema::create( 'vacantes', function ( Blueprint $table ) {
             $table->id();
             // relacionamos con la tabla categoria
             $table->foreignId( 'categoria_id' )->constrained()->onDelete( 'cascade' ); // eliminamos la categoria si se elimina la vacante con el metodo cascade
+            // relacionamos con la tabla experiencias
+            $table->foreignId( 'experiencia_id' )->constrained()->onDelete( 'cascade' ); // eliminamos la experiencia si se elimina la vacante con el metodo cascade
             $table->timestamps();
         } );
     }
@@ -37,6 +45,7 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists( 'vacantes' );
+        Schema::dropIfExists( 'experiencias' );
         Schema::dropIfExists( 'categorias' );
 
     }

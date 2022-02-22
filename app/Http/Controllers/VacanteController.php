@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
+use App\Models\Experiencia;
 use App\Models\Vacante;
 use Illuminate\Http\Request;
 
@@ -27,13 +29,16 @@ class VacanteController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear una nueva vacante
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        $catagorias   = Categoria::select( 'id', 'nombre' )->get();
+        $experiencias = Experiencia::select( 'id', 'nombre' )->get();
+
+        return view( 'vacantes.create', ['categorias' => $catagorias, 'experiencias' => $experiencias] );
     }
 
     /**

@@ -1,8 +1,15 @@
 <x-app-layout>
 	<x-slot name="header">
-		<h2 class="font-semibold text-xl text-teal-500 leading-tight container mx-auto">
-			Adiministrar tus vacantes
-		</h2>
+		<div class="flex justify-between container mx-auto">
+			<h2 class="font-semibold text-xl text-teal-500 leading-tight">
+				Adiministrar tus vacantes
+			</h2>
+			<a
+				href="{{ route('vacantes.create') }}"
+				class="btn-primary"
+			>Agregar vacante</a>
+		</div>
+
 	</x-slot>
 
 	<div class="container shadow-md bg-white rounded-md mx-auto mt-4 p-3">
