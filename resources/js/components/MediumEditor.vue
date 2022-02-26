@@ -6,7 +6,7 @@
 			>Descripción de la vacante</label
 		>
 		<div
-			class="editable p-3 rounded-md shadow-md outline-gray-800 md:flex-1 h-80 text-red-300 overflow-y-auto"
+			class="editable p-3 rounded-md shadow-md outline-gray-800 md:flex-1 h-80 overflow-y-auto"
 		>
 			{{ descripcion }}
 		</div>
