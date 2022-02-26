@@ -53,7 +53,6 @@ export default {
 						"clear",
 					],
 					static: false,
-					/* options which only apply when static is true */
 					align: "center",
 					sticky: false,
 					updateOnEmptySelection: false,
@@ -90,8 +89,8 @@ export default {
 			});
 
 			editor.subscribe("editableInput", function (event, editable) {
-				console.log(editable.innerHTML);
-				console.log(event, editable);
+				const html = editor.getContent(); // obtener el contenido del editor
+				console.log(html);
 			});
 		});
 	},

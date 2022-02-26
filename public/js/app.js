@@ -24826,8 +24826,6 @@ __webpack_require__.r(__webpack_exports__);
         toolbar: {
           buttons: ["bold", "italic", "underline", "anchor", "h2", "h3", "quote", "pre", "orderedlist", "unorderedlist", "justifyLeft", "justifyCenter", "justifyRight", "justifyFull", "removeFormat", "preview", "clear"],
           "static": false,
-
-          /* options which only apply when static is true */
           align: "center",
           sticky: false,
           updateOnEmptySelection: false
@@ -24859,8 +24857,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       editor.subscribe("editableInput", function (event, editable) {
-        console.log(editable.innerHTML);
-        console.log(event, editable);
+        var html = editor.getContent(); // obtener el contenido del editor
+
+        console.log(html);
       });
     });
   }
@@ -24893,7 +24892,7 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_3 = {
-  "class": "editable p-3 rounded-md shadow-md outline-gray-800 md:flex-1 h-80 text-red-300 overflow-y-auto"
+  "class": "editable p-3 rounded-md shadow-md outline-gray-800 md:flex-1 h-80 overflow-y-auto"
 };
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
