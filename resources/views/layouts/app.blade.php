@@ -20,6 +20,11 @@
 		href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
 	>
 
+	{{-- verificar si existe la seccion de estilos --}}
+	@isset($styles)
+		{{ $styles }}
+	@endisset
+
 	<!-- Styles -->
 	<link
 		rel="stylesheet"
@@ -51,6 +56,11 @@
 
 		@include('layouts.footer')
 	</div>
+
+	{{-- verificar si existe la seccion de script --}}
+	@isset($scripts)
+		{{ $scripts }}
+	@endisset
 </body>
 
 </html>

@@ -1,0 +1,97 @@
+.editable {
+	@apply text-gray-600;
+}
+.editable h2 {
+	@apply text-2xl font-bold;
+}
+.editable h3 {
+	@apply text-xl font-bold;
+}
+.editable h4 {
+	@apply text-lg font-bold;
+}
+.editable blockquote {
+	@apply p-4 bg-gray-100 border-l-4 border-gray-500;
+}
+.editable ol,
+.editable ul {
+	list-style-position: inside;
+}
+.editable ol {
+	@apply list-decimal;
+}
+
+.editable ul {
+	list-style-type: square;
+}
+.editable a {
+	@apply text-gray-800 underline;
+}
+.editable pre {
+	@apply p-2 bg-gray-200 rounded-sm;
+}
+/* medium editor */
+
+.medium-toolbar-arrow-under:after {
+	@apply border-gray-800 border-l-transparent border-b-transparent border-r-transparent;
+}
+
+.medium-toolbar-arrow-over:before {
+	@apply border-t-transparent border-l-transparent border-gray-800 border-r-transparent;
+}
+
+.medium-editor-toolbar {
+	@apply bg-gray-800 border-0 rounded-lg;
+}
+.medium-editor-toolbar li button {
+	@apply bg-gray-800 text-gray-300 hover:text-teal-500 hover:bg-gray-700 focus:outline-none transition-colors duration-200 ease-in-out;
+}
+.medium-editor-toolbar li .medium-editor-button-first {
+	@apply rounded-l-lg;
+}
+.medium-editor-toolbar li .medium-editor-button-last {
+	@apply rounded-r-lg;
+}
+.medium-editor-toolbar li .medium-editor-button-active {
+	@apply text-teal-500 bg-gray-700;
+}
+
+/* para cuando se va a mostrar el input para una url (enlace) */
+.medium-editor-toolbar-form-active {
+	@apply p-2 flex flex-wrap max-w-xs items-center;
+}
+
+.medium-editor-toolbar-form .medium-editor-toolbar-input {
+	@apply bg-gray-700 text-gray-300 flex-1 rounded-lg;
+}
+.medium-editor-toolbar-form
+	.medium-editor-toolbar-input::-webkit-input-placeholder {
+	@apply text-gray-400;
+}
+.medium-editor-toolbar-form .medium-editor-toolbar-input:-moz-placeholder {
+	/* Firefox 18- */
+	@apply text-gray-400;
+}
+.medium-editor-toolbar-form .medium-editor-toolbar-input::-moz-placeholder {
+	/* Firefox 19+ */
+	@apply text-gray-400;
+}
+.medium-editor-toolbar-form .medium-editor-toolbar-input:-ms-input-placeholder {
+	@apply text-gray-400;
+}
+.medium-editor-toolbar-form a {
+	@apply p-2 rounded-lg text-gray-300 hover:text-teal-500 hover:bg-gray-700 focus:outline-none transition-colors duration-200 ease-in-out;
+}
+
+.medium-editor-toolbar-anchor-preview {
+	@apply text-base bg-gray-800 text-gray-400 p-3 rounded-lg;
+}
+
+.medium-editor-anchor-preview a {
+	@apply text-gray-300 hover:underline;
+}
+/*
+.medium-editor-toolbar-actions li,
+.medium-editor-toolbar-actions button {
+	border-radius: 50px;
+} */
