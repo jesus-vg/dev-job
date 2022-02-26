@@ -50,7 +50,10 @@
 		</header>
 
 		<!-- Page Content -->
-		<main class="mt-7 flex-1">
+		<main
+			class="mt-7 flex-1"
+			id="app"
+		>
 			{{ $slot }}
 		</main>
 
