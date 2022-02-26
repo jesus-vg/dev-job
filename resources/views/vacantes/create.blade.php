@@ -137,23 +137,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="w-full md:w-1/2 lg:w-2/3 p-3 flex flex-col">
-					<label
-						for="descripcion"
-						class="block mb-2 text-sm font-medium text-gray-900 "
-					>Descripción de la vacante</label>
-					<div class="editable p-3 rounded-md shadow-md outline-gray-800 h-full">
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque assumenda provident reiciendis fugiat, tempore
-						facilis
-						illo consequuntur molestiae? Eveniet praesentium tempora pariatur doloremque molestias optio? Maiores veniam cum
-						rem
-						incidunt.
-					</div>
-					<input
-						type="hidden"
-						name="descripcion"
-						name="descripcion"
-					>
+				<div class="w-full md:w-1/2 lg:w-2/3 p-3">
+					<mediumn-editor descripcion="algo ..."></mediumn-editor>
 				</div>
 				<div class="w-full text-center">
 					<button
@@ -163,7 +148,6 @@
 				</div>
 		</form>
 	</div>
-
 
 
 	<x-slot name="scripts">
@@ -182,101 +166,6 @@
 		  crossorigin="anonymous"
 		  referrerpolicy="no-referrer"
 		></script>
-
-		<script>
-		 // evento una vez que el DOM esté listo
-		 document.addEventListener('DOMContentLoaded', function() {
-		  // crear un editor de texto
-		  const editor = new MediumEditor('.editable', {
-		   toolbar: {
-		    buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3', 'quote', 'pre', 'orderedlist', 'unorderedlist',
-		     'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'removeFormat', 'preview', 'clear'
-		    ],
-		    static: false,
-		    /* options which only apply when static is true */
-		    align: 'center',
-		    sticky: false,
-		    updateOnEmptySelection: false
-		    // forcePlainText: true,
-		    // sticky: true,
-		    // stickyTopOffset: 0,
-		    // stickyBottomOffset: 0,
-		    // stickyTarget: document.body,
-		    // toolbarContainer: document.body,
-		    // toolbarTarget: document.body,
-		    // relativeContainer: document.body,
-		    // diffLeft: 0,
-		    // diffTop: 0,
-		    // placeholder: '',
-		    // hideOnClick: true,
-		    // hideOnBlur: true,
-		    // contentWindow: window,
-		    // ownerDocument: document,
-		    // targetCheckbox:
-		    // 	'<input type="checkbox" class="medium-editor-toolbar-anchor-target" checked="">',
-		   },
-		  });
-
-		  editor.subscribe('editableInput', function(event, editable) {
-		   console.log(editable.innerHTML);
-		   console.log(event, editable);
-		  });
-
-		 });
-
-
-		 //  const editor = new MediumEditor('.editable', {
-		 //   toolbar: {
-		 //    /* These are the default options for the toolbar,
-		 //       if nothing is passed this is what is used */
-		 //    allowMultiParagraphSelection: true,
-		 //    buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3', 'quote'],
-		 //    diffLeft: 0,
-		 //    diffTop: -10,
-		 //    firstButtonClass: 'medium-editor-button-first',
-		 //    lastButtonClass: 'medium-editor-button-last',
-		 //    relativeContainer: null,
-		 //    standardizeSelectionStart: false,
-		 //    static: false,
-		 //    /* options which only apply when static is true */
-		 //    align: 'center',
-		 //    sticky: false,
-		 //    updateOnEmptySelection: false
-		 //   },
-		 //   placeholder: {
-		 //    /* This example includes the default options for placeholder,
-		 //       if nothing is passed this is what it used */
-		 //    text: 'Ingrese una descripción de la vacante',
-		 //    hideOnClick: true
-		 //   },
-		 //   keyboardCommands: {
-		 //    /* This example includes the default options for keyboardCommands,
-		 //       if nothing is passed this is what it used */
-		 //    commands: [{
-		 //      command: 'bold',
-		 //      key: 'B',
-		 //      meta: true,
-		 //      shift: false,
-		 //      alt: false
-		 //     },
-		 //     {
-		 //      command: 'italic',
-		 //      key: 'I',
-		 //      meta: true,
-		 //      shift: false,
-		 //      alt: false
-		 //     },
-		 //     {
-		 //      command: 'underline',
-		 //      key: 'U',
-		 //      meta: true,
-		 //      shift: false,
-		 //      alt: false
-		 //     }
-		 //    ],
-		 //   }
-		 //  });
-		</script>
 	</x-slot>
 
 </x-app-layout>
