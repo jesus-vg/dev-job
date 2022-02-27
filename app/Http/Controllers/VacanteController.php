@@ -58,7 +58,33 @@ class VacanteController extends Controller
      */
     public function store( Request $request )
     {
-        //
+        // Validamos los datos del formulario
+        $request->validate( [
+            'titulo'      => 'required|string|min:10|max:255',
+            'descripcion' => 'required|string|min:50',
+            'categoria'   => 'required|integer',
+            'experiencia' => 'required|integer',
+            'ubicacion'   => 'required|integer',
+            'salario'     => 'required|integer',
+            'imagen'      => 'required',
+            'skills'      => 'required|string|min:10|max:255',
+
+        ] );
+
+        return 'vacante creada';
+        // Creamos una nueva vacante
+        $vacante                 = new Vacante();
+        $vacante->titulo         = $request->titulo;
+        $vacante->descripcion    = $request->descripcion;
+        $vacante->categoria_id   = $request->categoria_id;
+        $vacante->experiencia_id = $request->experiencia_id;
+        $vacante->ubicacion_id   = $request->ubicacion_id;
+        $vacante->salario_id     = $request->salario_id;
+        $vacante->save();
+
+        // Redireccionamos al dashboard
+
+        return redirect()->route( 'dashboard' );
     }
 
     /**
@@ -106,14 +132,5 @@ class VacanteController extends Controller
     public function destroy( Vacante $vacante )
     {
         //
-    }
-
-    /**
-     *
-     */
-    public function imagenUpload( Request $request )
-    {
-        //
-        return 'imagen upload';
     }
 }

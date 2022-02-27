@@ -24,7 +24,12 @@
 	</x-slot>
 
 	<div class="container shadow-md bg-white rounded-md mx-auto my-4 p-3">
-		<form class="w-full">
+		<form
+			action="{{ route('vacantes.store') }}"
+			method="POST"
+			class="w-full"
+		>
+			@csrf
 			<div class="flex flex-wrap">
 				<div class="w-full md:w-1/2 lg:w-1/3 p-3">
 					<div class="md:flex md:items-center mb-6">
@@ -41,9 +46,12 @@
 								type="text"
 								id="titulo"
 								name="titulo"
-								class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-								value="{{ old('titulo') }}"
+								class="bg-gray-200 border rounded-lg appearance-none w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none  focus:border-gray-800 focus:ring-gray-800 @error('titulo') border-red-500 @enderror"
+								value="{{ old('titulo', '') }}"
 							>
+							@error('titulo')
+								<x-mensaje-error-input :message="$message" />
+							@enderror
 						</div>
 					</div>
 					<div class="md:flex md:items-center mb-6">
@@ -57,16 +65,21 @@
 							<select
 								id="categoria"
 								name="categoria"
-								class="bg-gray-700 border border-gray-600 placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full"
+								class="bg-gray-700 border placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full @error('categoria') border-red-500 @enderror"
 							>
-								<option
-									disabled
-									selected
-								>- Selecciona una categoria -</option>
+								<option>- Selecciona una categoria -</option>
 								@foreach ($categorias as $categoria)
-									<option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+									<option
+										value="{{ $categoria->id }}"
+										{{ old('categoria') == $categoria->id ? 'selected' : '' }}
+									>
+										{{ $categoria->nombre }}
+									</option>
 								@endforeach
 							</select>
+							@error('categoria')
+								<x-mensaje-error-input :message="$message" />
+							@enderror
 						</div>
 					</div>
 					<div class="md:flex md:items-center mb-6">
@@ -80,19 +93,19 @@
 							<select
 								id="experiencia"
 								name="experiencia"
-								class="bg-gray-700 border border-gray-600 placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full"
+								class="bg-gray-700 border placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full @error('experiencia') border-red-500 @enderror"
 							>
-								<option
-									disabled
-									selected
-								>- Selecciona una categoria -</option>
+								<option>- Selecciona una categoria -</option>
 								@foreach ($experiencias as $experiencia)
 									<option
 										value="{{ $experiencia->id }}"
-										class="hover:bg-teal-500 p-2"
+										{{ old('experiencia') == $experiencia->id ? 'selected' : '' }}
 									>{{ $experiencia->nombre }}</option>
 								@endforeach
 							</select>
+							@error('experiencia')
+								<x-mensaje-error-input :message="$message" />
+							@enderror
 						</div>
 					</div>
 					<div class="md:flex md:items-center mb-6">
@@ -106,16 +119,19 @@
 							<select
 								id="ubicacion"
 								name="ubicacion"
-								class="bg-gray-700 border border-gray-600 placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full"
+								class="bg-gray-700 border placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full @error('ubicacion') border-red-500 @enderror"
 							>
-								<option
-									disabled
-									selected
-								>- Selecciona una ubicación -</option>
+								<option>- Selecciona una ubicación -</option>
 								@foreach ($ubicaciones as $ubicacion)
-									<option value="{{ $ubicacion->id }}">{{ $ubicacion->nombre }}</option>
+									<option
+										value="{{ $ubicacion->id }}"
+										{{ old('ubicacion') == $ubicacion->id ? 'selected' : '' }}
+									>{{ $ubicacion->nombre }}</option>
 								@endforeach
 							</select>
+							@error('ubicacion')
+								<x-mensaje-error-input :message="$message" />
+							@enderror
 						</div>
 					</div>
 					<div class="md:flex md:items-center mb-6">
@@ -129,36 +145,45 @@
 							<select
 								id="salario"
 								name="salario"
-								class="bg-gray-700 border border-gray-600 placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full"
+								class="bg-gray-700 border placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full @error('salario') border-red-500 @enderror"
 							>
-								<option
-									disabled
-									selected
-								>- Selecciona un rango -</option>
+								<option>- Selecciona un rango -</option>
 								@foreach ($salarios as $salario)
-									<option value="{{ $salario->id }}">{{ $salario->nombre }}</option>
+									<option
+										value="{{ $salario->id }}"
+										{{ old('salario') == $salario->id ? 'selected' : '' }}
+									>{{ $salario->nombre }}</option>
 								@endforeach
 							</select>
+							@error('salario')
+								<x-mensaje-error-input :message="$message" />
+							@enderror
 						</div>
 					</div>
 				</div>
 				<div class="w-full md:w-1/2 lg:w-2/3 p-3">
-					<mediumn-editor descripcion="algo ..."></mediumn-editor>
+					<mediumn-editor descripcion="{{ old('descripcion', '') }}"></mediumn-editor>
+					@error('descripcion')
+						<x-mensaje-error-input :message="$message" />
+					@enderror
 				</div>
 				<div class="w-full text-center">
 					<dropzonejs></dropzonejs>
 				</div>
-				<div class="w-full text-center">
+				<div class="max-w-2xl mx-auto text-center my-4">
 					@php
 						$skills = ['HTML5', 'CSS3', 'CSSGrid', 'Flexbox', 'JavaScript', 'jQuery', 'Node', 'Angular', 'VueJS', 'ReactJS', 'React Hooks', 'Redux', 'Apollo', 'GraphQL', 'TypeScript', 'PHP', 'Laravel', 'Symfony', 'Python', 'Django', 'ORM', 'Sequelize', 'Mongoose', 'SQL', 'MVC', 'SASS', 'WordPress', 'Express', 'Deno', 'React Native', 'Flutter', 'MobX', 'C#', 'Ruby on Rails'];
 					@endphp
 					<lista-skills :skills="{{ json_encode($skills) }}"></lista-skills>
+					@error('skills')
+						<x-mensaje-error-input :message="$message" />
+					@enderror
 				</div>
 				<div class="w-full text-center">
 					<button
-						type="button"
-						class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-					>Green</button>
+						type="submit"
+						class="btn-primary"
+					>Enviar</button>
 				</div>
 		</form>
 	</div>
