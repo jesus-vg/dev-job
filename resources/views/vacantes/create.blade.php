@@ -23,9 +23,6 @@
 		</div>
 	</x-slot>
 
-	@php
-		$skills = ['HTML5', 'CSS3', 'CSSGrid', 'Flexbox', 'JavaScript', 'jQuery', 'Node', 'Angular', 'VueJS', 'ReactJS', 'React Hooks', 'Redux', 'Apollo', 'GraphQL', 'TypeScript', 'PHP', 'Laravel', 'Symfony', 'Python', 'Django', 'ORM', 'Sequelize', 'Mongoose', 'SQL', 'MVC', 'SASS', 'WordPress', 'Express', 'Deno', 'React Native', 'Flutter', 'MobX', 'C#', 'Ruby on Rails'];
-	@endphp
 	<div class="container shadow-md bg-white rounded-md mx-auto my-4 p-3">
 		<form class="w-full">
 			<div class="flex flex-wrap">
@@ -150,6 +147,12 @@
 				</div>
 				<div class="w-full text-center">
 					<dropzonejs></dropzonejs>
+				</div>
+				<div class="w-full text-center">
+					@php
+						$skills = ['HTML5', 'CSS3', 'CSSGrid', 'Flexbox', 'JavaScript', 'jQuery', 'Node', 'Angular', 'VueJS', 'ReactJS', 'React Hooks', 'Redux', 'Apollo', 'GraphQL', 'TypeScript', 'PHP', 'Laravel', 'Symfony', 'Python', 'Django', 'ORM', 'Sequelize', 'Mongoose', 'SQL', 'MVC', 'SASS', 'WordPress', 'Express', 'Deno', 'React Native', 'Flutter', 'MobX', 'C#', 'Ruby on Rails'];
+					@endphp
+					<lista-skills :skills="{{ json_encode($skills) }}"></lista-skills>
 				</div>
 				<div class="w-full text-center">
 					<button

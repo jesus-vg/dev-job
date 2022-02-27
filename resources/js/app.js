@@ -20,6 +20,7 @@ app.component(
 );
 // componete dropzonejs
 app.component("dropzonejs", require("./components/Dropzonejs.vue").default);
+app.component("lista-skills", require("./components/ListaSkills.vue").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
