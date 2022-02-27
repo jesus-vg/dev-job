@@ -7,10 +7,13 @@
 		>
 		<div
 			class="editable p-3 rounded-md shadow-md outline-gray-800 md:flex-1 h-80 overflow-y-auto"
-		>
-			{{ descripcion }}
-		</div>
-		<input type="hidden" name="descripcion" id="descripcion" />
+		></div>
+		<input
+			type="hidden"
+			name="descripcion"
+			id="descripcion"
+			ref="descripcion"
+		/>
 	</div>
 </template>
 
@@ -29,7 +32,7 @@ export default {
 	},
 	mounted() {
 		// evento una vez que el DOM esté listo
-		document.addEventListener("DOMContentLoaded", function () {
+		document.addEventListener("DOMContentLoaded", () => {
 			// crear un editor de texto
 			const editor = new MediumEditor(".editable", {
 				toolbar: {
@@ -88,10 +91,14 @@ export default {
 				},
 			});
 
-			editor.subscribe("editableInput", function (event, editable) {
+			editor.subscribe("editableInput", (event, editable) => {
 				const html = editor.getContent(); // obtener el contenido del editor
 				console.log(html);
+				this.$refs.descripcion.value = html;
 			});
+
+			editor.setContent(this.descripcion); // poner el contenido del editor
+			this.$refs.descripcion.value = this.descripcion;
 		});
 	},
 };
