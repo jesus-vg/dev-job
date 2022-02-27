@@ -41,6 +41,7 @@ return new class extends Migration
 
         Schema::create( 'vacantes', function ( Blueprint $table ) {
             $table->id();
+            $table->text( 'descripcion' );
             // relacionamos con la tabla categoria
             $table->foreignId( 'categoria_id' )->constrained()->onDelete( 'cascade' ); // eliminamos la categoria si se elimina la vacante con el metodo cascade
             // relacionamos con la tabla experiencias
