@@ -107,4 +107,13 @@ class VacanteController extends Controller
     {
         //
     }
+
+    /**
+     *
+     */
+    public function imagenUpload( Request $request )
+    {
+        //
+        return 'imagen upload';
+    }
 }

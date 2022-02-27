@@ -8,6 +8,11 @@
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"
 		/>
+		<link
+			href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css"
+			rel="stylesheet"
+			type="text/css"
+		/>
 	</x-slot>
 
 	<x-slot name="header">
@@ -18,6 +23,9 @@
 		</div>
 	</x-slot>
 
+	@php
+		$skills = ['HTML5', 'CSS3', 'CSSGrid', 'Flexbox', 'JavaScript', 'jQuery', 'Node', 'Angular', 'VueJS', 'ReactJS', 'React Hooks', 'Redux', 'Apollo', 'GraphQL', 'TypeScript', 'PHP', 'Laravel', 'Symfony', 'Python', 'Django', 'ORM', 'Sequelize', 'Mongoose', 'SQL', 'MVC', 'SASS', 'WordPress', 'Express', 'Deno', 'React Native', 'Flutter', 'MobX', 'C#', 'Ruby on Rails'];
+	@endphp
 	<div class="container shadow-md bg-white rounded-md mx-auto my-4 p-3">
 		<form class="w-full">
 			<div class="flex flex-wrap">
@@ -141,6 +149,9 @@
 					<mediumn-editor descripcion="algo ..."></mediumn-editor>
 				</div>
 				<div class="w-full text-center">
+					<dropzonejs></dropzonejs>
+				</div>
+				<div class="w-full text-center">
 					<button
 						type="button"
 						class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
@@ -151,21 +162,13 @@
 
 
 	<x-slot name="scripts">
-		<script>
-		 // $(document).ready(function () {
-		 // 	$('#countries').select2({
-		 // 		placeholder: 'Selecciona una ubicación',
-		 // 		allowClear: true,
-		 // 		language: "es"
-		 // 	});
-		 // });
-		</script>
 		<script
 		  src="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.2/js/medium-editor.min.js"
 		  integrity="sha512-d6bIVjxc9jWlQOuvjRh5AT2TIJ9IEH/kzCQ8qcek1Cos8ybrj/kCAMKBjRrpHce8nFDpodMKSD+Liu/Nyir9Sw=="
 		  crossorigin="anonymous"
 		  referrerpolicy="no-referrer"
 		></script>
+		<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
 	</x-slot>
 
 </x-app-layout>

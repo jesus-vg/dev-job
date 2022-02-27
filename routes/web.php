@@ -28,3 +28,4 @@ Route::get( '/dashboard', function () {
 // Ruta de vacantes
 Route::get( '/vacantes', [VacanteController::class, 'index'] )->name( 'vacantes.index' );
 Route::get( '/vacantes/crear', [VacanteController::class, 'create'] )->name( 'vacantes.create' );
+Route::post( '/vacantes/imagen-upload', [VacanteController::class, 'imagenUpload'] )->name( 'vacantes.imagen-upload' );

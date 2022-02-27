@@ -18,6 +18,8 @@ app.component(
 	"mediumn-editor",
 	require("./components/MediumEditor.vue").default
 );
+// componete dropzonejs
+app.component("dropzonejs", require("./components/Dropzonejs.vue").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
