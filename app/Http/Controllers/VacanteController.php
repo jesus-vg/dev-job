@@ -64,18 +64,25 @@ class VacanteController extends Controller
      */
     public function store( Request $request )
     {
+        // return $request->all();
         // Validamos los datos del formulario
-        $request->validate( [
-            'titulo'      => 'required|string|min:10|max:255',
-            'descripcion' => 'required|string|min:50',
-            'categoria'   => 'required|integer',
-            'experiencia' => 'required|integer',
-            'ubicacion'   => 'required|integer',
-            'salario'     => 'required|integer',
-            'imagen'      => 'required|min:20', // imagen es un array ejemplo ... _______['archivo','archivo2']
-            'skills' => 'required|string|min:10|max:255',
-
-        ] );
+        $request->validate(
+            [
+                'titulo'      => 'required|string|min:10|max:255',
+                'descripcion' => 'required|string|min:50',
+                'categoria'   => 'required|integer',
+                'experiencia' => 'required|integer',
+                'ubicacion'   => 'required|integer',
+                'salario'     => 'required|integer',
+                // indicamos que la imagen debe ser obligatoria y debe ser en json
+                'imagen'      => 'required|json|min:20', // imagen es un json ejemplo ... ['archivo','archivo2']
+                'skills' => 'required|string|min:10|max:255',
+            ],
+            [
+                'imagen.required' => 'Seleccione una imagen',
+                'imagen.min'      => 'Seleccione una imagen',
+            ]
+        );
 
         return 'vacante creada';
         // Creamos una nueva vacante

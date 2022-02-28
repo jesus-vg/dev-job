@@ -144,6 +144,10 @@ export default {
 
 				this.myDropzone.displayExistingFile(mockFile, url + imagen); // agregamos al preview
 				this.myDropzone.files.push(mockFile); // agregamos el archivo a la lista de archivos
+				this.myDropzone._updateMaxFilesReachedClass();
+
+				// this.myDropzone.emit("addedfile", mockFile);
+				// this.myDropzone.emit("complete", mockFile);
 			});
 
 			setTimeout(() => {
@@ -151,26 +155,41 @@ export default {
 					this.setImages();
 				}
 			}, 1000);
+
+			// prevenimos el envio del formulario para antes agregar los archivos al input imgVacante
+			const form = document.querySelector(".form-vacante");
+			form.addEventListener("submit", (e) => {
+				e.preventDefault();
+				const inputImg = this.$refs.imgVacante;
+				if (inputImg) {
+					inputImg.value = JSON.stringify(this.imagenes);
+					setTimeout(() => {
+						// enviamos el formulario
+						form.submit();
+					}, 1000);
+				}
+			});
 		});
 	},
 	methods: {
 		setImages() {
 			// console.log(JSON.stringify(this.imagenes));
+			// console.log("dropzone", this.myDropzone);
 			if (this.imagenes.length === 0) {
 				document
 					.getElementById("dropzonejs")
 					.classList.remove("dz-started");
 			}
 			// obtenemos el primer preview del dropzone
-			const imgBase64 =
-				document
-					.querySelector(".dz-preview")
-					?.children[0]?.children[0]?.getAttribute("src") ?? "";
+			// const imgBase64 =
+			// 	document
+			// 		.querySelector(".dz-preview")
+			// 		?.children[0]?.children[0]?.getAttribute("src") ?? "";
 
-			// console.log("base64", base64);
+			// // console.log("base64", base64);
 
-			this.$refs.imgVacante.value =
-				imgBase64 + "_______" + JSON.stringify(this.imagenes);
+			// this.$refs.imgVacante.value =
+			// 	imgBase64 + "_______" + JSON.stringify(this.imagenes);
 		},
 	},
 };

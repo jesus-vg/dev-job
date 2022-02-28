@@ -27,7 +27,7 @@
 		<form
 			action="{{ route('vacantes.store') }}"
 			method="POST"
-			class="w-full"
+			class="w-full form-vacante"
 		>
 			@csrf
 			<div class="flex flex-wrap">
@@ -67,7 +67,7 @@
 								name="categoria"
 								class="bg-gray-700 border placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full @error('categoria') border-red-500 @enderror"
 							>
-								<option>- Selecciona una categoria -</option>
+								<option value="">- Selecciona una categoria -</option>
 								@foreach ($categorias as $categoria)
 									<option
 										value="{{ $categoria->id }}"
@@ -95,7 +95,7 @@
 								name="experiencia"
 								class="bg-gray-700 border placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full @error('experiencia') border-red-500 @enderror"
 							>
-								<option>- Selecciona una categoria -</option>
+								<option value="">- Selecciona una categoria -</option>
 								@foreach ($experiencias as $experiencia)
 									<option
 										value="{{ $experiencia->id }}"
@@ -121,7 +121,7 @@
 								name="ubicacion"
 								class="bg-gray-700 border placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full @error('ubicacion') border-red-500 @enderror"
 							>
-								<option>- Selecciona una ubicación -</option>
+								<option value="">- Selecciona una ubicación -</option>
 								@foreach ($ubicaciones as $ubicacion)
 									<option
 										value="{{ $ubicacion->id }}"
@@ -147,7 +147,7 @@
 								name="salario"
 								class="bg-gray-700 border placeholder-gray-400 text-gray-300 focus:ring-gray-500 focus:border-gray-500 rounded-lg text-sm w-full @error('salario') border-red-500 @enderror"
 							>
-								<option>- Selecciona un rango -</option>
+								<option value="">- Selecciona un rango -</option>
 								@foreach ($salarios as $salario)
 									<option
 										value="{{ $salario->id }}"
