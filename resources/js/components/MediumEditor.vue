@@ -93,7 +93,7 @@ export default {
 
 			editor.subscribe("editableInput", (event, editable) => {
 				const html = editor.getContent(); // obtener el contenido del editor
-				console.log(html);
+				// console.log(html);
 				this.$refs.descripcion.value = html;
 			});
 
