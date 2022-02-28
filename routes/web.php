@@ -33,7 +33,6 @@ Route::get( '/vacantes', [VacanteController::class, 'index'] )->name( 'vacantes.
 Route::get( '/vacantes/crear', [VacanteController::class, 'create'] )->name( 'vacantes.create' );
 Route::post( '/vacantes', [VacanteController::class, 'store'] )->name( 'vacantes.store' );
 
-// simulamos la ruta para subir una imagen (no se suben solo es para que la libreria dropzone funcione)
-Route::post( '/vacantes/imagen-upload', function () {
-    return 'imagen upload';
-} )->name( 'vacantes.imagen-upload' );
+// subida de imagenes
+Route::post( '/vacantes/imagen-upload', [VacanteController::class, 'imagenUpload'] )->name( 'vacantes.imagen-upload' );
+Route::post( '/vacantes/imagen-delete', [VacanteController::class, 'imagenDelete'] )->name( 'vacantes.imagen-delete' );

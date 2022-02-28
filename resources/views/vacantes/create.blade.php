@@ -168,7 +168,10 @@
 					@enderror
 				</div>
 				<div class="w-full text-center">
-					<dropzonejs></dropzonejs>
+					<dropzonejs imagenes-temporales="{{ json_encode($imagenesTemp) }}"></dropzonejs>
+					@error('imagen')
+						<x-mensaje-error-input :message="$message" />
+					@enderror
 				</div>
 				<div class="max-w-2xl mx-auto text-center my-4">
 					@php

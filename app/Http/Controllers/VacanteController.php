@@ -8,6 +8,7 @@ use App\Models\Salario;
 use App\Models\Ubicacion;
 use App\Models\Vacante;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class VacanteController extends Controller
 {
@@ -42,11 +43,16 @@ class VacanteController extends Controller
         $ubicaciones  = Ubicacion::select( 'id', 'nombre' )->get();
         $salarios     = Salario::select( 'id', 'nombre' )->get();
 
+        // mostramos las imagenes que ya se han subido en el formulario pero no se han eliminado
+        $rutaTemporal = 'temp/' . auth()->user()->id . '/vacantes/imagenes';
+        $imagenesTemp = Storage::disk( 'public' )->files( $rutaTemporal );
+
         return view( 'vacantes.create', [
             'categorias'   => $catagorias,
             'experiencias' => $experiencias,
             'ubicaciones'  => $ubicaciones,
             'salarios'     => $salarios,
+            'imagenesTemp' => $imagenesTemp,
         ] );
     }
 
@@ -66,8 +72,8 @@ class VacanteController extends Controller
             'experiencia' => 'required|integer',
             'ubicacion'   => 'required|integer',
             'salario'     => 'required|integer',
-            'imagen'      => 'required',
-            'skills'      => 'required|string|min:10|max:255',
+            'imagen'      => 'required|min:20', // imagen es un array ejemplo ... _______['archivo','archivo2']
+            'skills' => 'required|string|min:10|max:255',
 
         ] );
 
@@ -132,5 +138,60 @@ class VacanteController extends Controller
     public function destroy( Vacante $vacante )
     {
         //
+    }
+
+    /**
+     * Metodo para subir imagenes.
+     * Se utiliza unicamente al crear una nueva vacante
+     * @param Request $request
+     */
+    public function imagenUpload( Request $request )
+    {
+        // Validamos los datos del formulario
+        $request->validate( [
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ] );
+
+        $usuario = auth()->user();
+
+        $rutaTemporal = 'temp/' . $usuario->id . '/vacantes/imagenes';
+
+        // subimos la imagen al servidor en una carpeta temporal
+        $ruta = $request->file( 'imagen' )->store( $rutaTemporal, 'public' );
+
+        return response()->json( [
+            'mensaje'   => 'ok',
+            'path_temp' => $ruta,
+        ] );
+    }
+
+    /**
+     * Metodo para eliminar una imagen
+     * @param Request $request
+     */
+    public function imagenDelete( Request $request )
+    {
+        if ( $request->ajax() ) {
+
+            $request->validate( [
+                'imagen' => 'required|string',
+            ] );
+
+            $user = auth()->user();
+
+            $pathTemp = explode( '/', $request->imagen );
+
+            // validamos que la ruta sea la correcta temp/usuario_id/...
+            if ( $pathTemp[0] == 'temp' && $pathTemp[1] == $user->id ) {
+                // eliminamos la imagen del servidor si existe
+                if ( Storage::disk( 'public' )->exists( $request->imagen ) ) {
+                    Storage::disk( 'public' )->delete( $request->imagen );
+                }
+            }
+
+            return response()->json( [
+                'mensaje' => 'ok',
+            ] );
+        }
     }
 }
