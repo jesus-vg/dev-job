@@ -1,10 +1,17 @@
 <template>
+	<label for="skills" class="block mb-2 text-sm font-medium text-gray-900">
+		Conocimientos y habilidades
+		<small class="text-xs">(Elige al menos 3)</small>
+	</label>
 	<ul class="flex flex-wrap justify-center">
 		<li
-			class="p-2 bg-gray-100 rounded-lg m-2 cursor-pointer"
+			class="p-2 rounded-lg m-2 cursor-pointer"
 			v-for="skill in skills"
 			:key="skill.id"
 			@click="selectSkill($event, skill)"
+			:class="
+				isSelected(skill) ? 'bg-gray-800 text-white' : 'bg-gray-100'
+			"
 		>
 			{{ skill }}
 		</li>
@@ -18,6 +25,10 @@ export default {
 		skills: {
 			type: Array,
 			required: true,
+		},
+		oldSkills: {
+			type: String, // "skill1,skill2,skill3"
+			default: "",
 		},
 	},
 	data() {
@@ -49,6 +60,7 @@ export default {
 				element.remove("text-white");
 			}
 
+			// si no contiene la clase bg-gray-100, la agregamos a la lista de skills, sino la quitamos
 			this.agregarQuitarSkills(!element.contains("bg-gray-100"), skill);
 		},
 		/**
@@ -66,9 +78,23 @@ export default {
 			// actualizamos el valor del input con la lista de skills seleccionadas
 			this.$refs.skills.value = Array.from(this.listaSkills);
 		},
+		/**
+		 * Devuelve true si la skill está seleccionada, false en caso contrario.
+		 * @param {String} skill
+		 * @returns {Boolean}
+		 */
+		isSelected(skill) {
+			return this.listaSkills.has(skill);
+		},
 	},
 	mounted() {
-		// console.log(this.skills);
+		// si oldSkills no está vacío, seleccionamos las skills que ya teníamos
+		if (this.oldSkills) {
+			const skills = this.oldSkills.split(",");
+			skills.forEach((skill) => {
+				this.agregarQuitarSkills(true, skill);
+			});
+		}
 	},
 };
 </script>

@@ -64,7 +64,7 @@ class VacanteController extends Controller
      */
     public function store( Request $request )
     {
-        return $request->all();
+        // return $request->all();
         // Validamos los datos del formulario
         $request->validate(
             [
@@ -74,9 +74,8 @@ class VacanteController extends Controller
                 'experiencia' => 'required|integer',
                 'ubicacion'   => 'required|integer',
                 'salario'     => 'required|integer',
-                // indicamos que la imagen debe ser obligatoria y debe ser en json
                 'imagen'      => 'required|json|min:25', // imagen es un json ejemplo ... ['archivo','archivo2']
-                'skills' => 'required|string|min:10|max:255',
+                'skills' => 'required|string|min:5|max:255',
             ],
             [
                 'imagen.required' => 'Seleccione una imagen',
@@ -87,6 +86,7 @@ class VacanteController extends Controller
                 //         "temp/1/vacantes/imagenes/YVw0rxd1CqS0A16EiiEiBDYdoqBLJxa1aGB0NAu5.png"
                 // ]"
                 'imagen.min'      => 'Seleccione una imagen', // se le pone un limite
+                'skills.min' => 'Seleccione minimo 3 skills',
             ]
         );
 

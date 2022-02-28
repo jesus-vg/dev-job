@@ -177,7 +177,10 @@
 					@php
 						$skills = ['HTML5', 'CSS3', 'CSSGrid', 'Flexbox', 'JavaScript', 'jQuery', 'Node', 'Angular', 'VueJS', 'ReactJS', 'React Hooks', 'Redux', 'Apollo', 'GraphQL', 'TypeScript', 'PHP', 'Laravel', 'Symfony', 'Python', 'Django', 'ORM', 'Sequelize', 'Mongoose', 'SQL', 'MVC', 'SASS', 'WordPress', 'Express', 'Deno', 'React Native', 'Flutter', 'MobX', 'C#', 'Ruby on Rails'];
 					@endphp
-					<lista-skills :skills="{{ json_encode($skills) }}"></lista-skills>
+					<lista-skills
+						:skills="{{ json_encode($skills) }}"
+						:old-skills="{{ json_encode(old('skills', '')) }}"
+					></lista-skills>
 					@error('skills')
 						<x-mensaje-error-input :message="$message" />
 					@enderror
