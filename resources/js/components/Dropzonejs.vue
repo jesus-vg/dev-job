@@ -66,7 +66,7 @@ export default {
 			});
 
 			this.myDropzone.on("addedfile", (file) => {
-				// console.log(file);
+				// si se excede el numero de archivos permitidos eliminamos el archivo que se acaba de agregar
 				if (
 					this.myDropzone.files.length >
 					this.myDropzone.options.maxFiles - 1
@@ -76,8 +76,6 @@ export default {
 			});
 
 			this.myDropzone.on("removedfile", (file) => {
-				// console.log("el archivo borrado fue ", file);
-
 				// si existe la propiedad nameServer entonces es una imagen que ya se guardo en el servidor,
 				// se debe eliminar del directorio
 				if (file.nameServer) {
@@ -88,12 +86,18 @@ export default {
 					axios
 						.post("./imagen-delete", params)
 						.then((res) => {
-							// console.log(res);
 							// eliminar la imagen del array de imagenes
 							this.imagenes = this.imagenes.filter(
 								(imagen) => imagen !== file.nameServer
 							);
-							this.setImages();
+
+							// bug de dropzonejs que no muestra el mensaje default "Arrastra las imagenes aqui o haz click"
+							if (this.imagenes.length === 0) {
+								// si no hay imagenes se muestra el mensaje default
+								document
+									.getElementById("dropzonejs")
+									.classList.remove("dz-started");
+							}
 						})
 						.catch((err) => {
 							console.log(err);
@@ -102,25 +106,20 @@ export default {
 
 				// quitamos el mensaje de error si ya no hay archivos
 				if (this.myDropzone.files.length === 0) {
-					document.querySelector("#file-no-valid").innerHTML = "";
+					document.getElementById("file-no-valid").innerHTML = "";
 				}
 			});
 
 			this.myDropzone.on("success", (file, response) => {
-				// console.log("success", response, file);
-
 				document.getElementById("file-no-valid").innerHTML = "";
 
 				// agregamos al objeto file el nombre de la imagen que le asignamos en el servidor
 				file.nameServer = response.path_temp;
 
 				this.imagenes.push(response.path_temp);
-				this.setImages();
 			});
 
 			this.myDropzone.on("error", function (file, response) {
-				// console.log("ERROR", response);
-
 				document.getElementById("file-no-valid").innerHTML =
 					response.errors?.imagen.join("<br>") ?? response;
 
@@ -145,54 +144,22 @@ export default {
 				this.myDropzone.displayExistingFile(mockFile, url + imagen); // agregamos al preview
 				this.myDropzone.files.push(mockFile); // agregamos el archivo a la lista de archivos
 				this.myDropzone._updateMaxFilesReachedClass();
-
-				// this.myDropzone.emit("addedfile", mockFile);
-				// this.myDropzone.emit("complete", mockFile);
 			});
 
-			setTimeout(() => {
-				if (this.imagenes.length > 0) {
-					this.setImages();
-				}
-			}, 1000);
+			const form = document.querySelector(".form-vacante");
 
 			// prevenimos el envio del formulario para antes agregar los archivos al input imgVacante
-			const form = document.querySelector(".form-vacante");
 			form.addEventListener("submit", (e) => {
 				e.preventDefault();
+
 				const inputImg = this.$refs.imgVacante;
+
 				if (inputImg) {
 					inputImg.value = JSON.stringify(this.imagenes);
-					setTimeout(() => {
-						// enviamos el formulario
-						form.submit();
-					}, 1000);
+					form.submit();
 				}
 			});
 		});
 	},
-	methods: {
-		setImages() {
-			// console.log(JSON.stringify(this.imagenes));
-			// console.log("dropzone", this.myDropzone);
-			if (this.imagenes.length === 0) {
-				document
-					.getElementById("dropzonejs")
-					.classList.remove("dz-started");
-			}
-			// obtenemos el primer preview del dropzone
-			// const imgBase64 =
-			// 	document
-			// 		.querySelector(".dz-preview")
-			// 		?.children[0]?.children[0]?.getAttribute("src") ?? "";
-
-			// // console.log("base64", base64);
-
-			// this.$refs.imgVacante.value =
-			// 	imgBase64 + "_______" + JSON.stringify(this.imagenes);
-		},
-	},
 };
 </script>
-
-<style></style>
