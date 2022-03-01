@@ -1,3 +1,5 @@
+{{-- Para resaltar el boton de la pagina actual
+	https://aprendible.com/series/laravel-desde-cero/lecciones/activacion-de-links-de-navegacion/ --}}
 <nav
 	x-data="{ open: false }"
 	class="bg-gray-800 text-gray-400"
@@ -17,7 +19,8 @@
 				<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
 					<x-nav-link
 						:href="route('vacantes.index')"
-						:active="request()->is('vacantes')"
+						{{-- :active="request()->is('vacantes')" --}}
+						:active="request()->routeIs('vacantes.*')"
 					>
 						Vacantes
 					</x-nav-link>
