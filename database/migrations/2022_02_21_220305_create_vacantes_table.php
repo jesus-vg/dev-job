@@ -41,6 +41,8 @@ return new class extends Migration
 
         Schema::create( 'vacantes', function ( Blueprint $table ) {
             $table->id();
+            $table->string( 'titulo' );
+            $table->string( 'slug' );
             $table->text( 'descripcion' );
             // relacionamos con la tabla categoria
             $table->foreignId( 'categoria_id' )->constrained()->onDelete( 'cascade' ); // eliminamos la categoria si se elimina la vacante con el metodo cascade
@@ -50,6 +52,11 @@ return new class extends Migration
             $table->foreignId( 'ubicacion_id' )->constrained()->onDelete( 'cascade' )->references( 'id' )->on( 'ubicaciones' ); // eliminamos la ubicacion si se elimina la vacante con el metodo cascade
             // relacionamos con la tabla salarios
             $table->foreignId( 'salario_id' )->constrained()->onDelete( 'cascade' ); // eliminamos el salario si se elimina la vacante con el metodo cascade
+            $table->string( 'skills' );
+            $table->text( 'imagen' );
+            $table->boolean( 'activo' )->default( true );
+            // relacionamos con la tabla ubicaciones
+            $table->foreignId( 'user_id' )->constrained()->onDelete( 'cascade' )->references( 'id' )->on( 'users' ); // eliminamos el usuario si se elimina la vacante con el metodo cascade
             $table->timestamps();
         } );
     }
