@@ -43,7 +43,7 @@ class VacanteController extends Controller
         $ubicaciones  = Ubicacion::select( 'id', 'nombre' )->get();
         $salarios     = Salario::select( 'id', 'nombre' )->get();
 
-        // mostramos las imagenes que ya se han subido en el formulario pero no se han eliminado
+        // mostramos las imagenes que ya se han subido en el formulario (carpeta temporal)
         $rutaTemporal = 'temp/' . auth()->user()->id . '/vacantes/imagenes';
         $imagenesTemp = Storage::disk( 'public' )->files( $rutaTemporal );
 
@@ -64,22 +64,18 @@ class VacanteController extends Controller
      */
     public function store( Request $request )
     {
-        // return $request->all();
-        // Validamos los datos del formulario
         $request->validate(
             [
-                // 'titulo'      => 'required|string|unique:vacantes,titulo|max:255',
                 'titulo'      => 'required|string|max:255',
                 'descripcion' => 'required|string|min:50',
                 'categoria'   => 'required|integer',
                 'experiencia' => 'required|integer',
                 'ubicacion'   => 'required|integer',
                 'salario'     => 'required|integer',
-                'imagen'      => 'required|json|min:25', // imagen es un json ejemplo ... ['archivo','archivo2']
-                'skills' => 'required|string|min:5|max:255',
+                'imagen'      => 'required|json|min:25',
+                'skills'      => 'required|string|min:5|max:255',
             ],
             [
-                'titulo.unique'   => 'Ya existe una vacante con este titulo',
                 'imagen.required' => 'Seleccione una imagen',
                 // Personalizamos el mensaje de error para cuando los caracteres sean menores a 25
                 // se valida en caso de que se manipule el json ya que un valor esperado es (minimo 1 archivo):
@@ -87,53 +83,64 @@ class VacanteController extends Controller
                 //         "temp/1/vacantes/imagenes/xzicLDofoUJtaSZ2H9APwxI3ublCxWi46G6tGi9A.png",
                 //         "temp/1/vacantes/imagenes/YVw0rxd1CqS0A16EiiEiBDYdoqBLJxa1aGB0NAu5.png"
                 // ]"
-                'imagen.min'      => 'Seleccione una imagen', // se le pone un limite
-                'skills.min' => 'Seleccione minimo 3 skills',
+                'imagen.min'      => 'Seleccione una imagen',
+                'skills.min'      => 'Seleccione minimo 3 skills',
             ]
         );
 
-        $imagenes = json_decode( $request->imagen ); // decodificamos el json para obtener los nombres de las imagenes
-
-        // modificamos la ruta de cada imagen por vacantes/imagenes/nombre_imagen
-        $imagenes = array_map( function ( $ruta ) {
-            // ruta = "temp/1/vacantes/imagenes/xzicLDofoUJtaSZ2H9APwxI3ublCxWi46G6tGi9A.png"
-
-            $nombreImagen = basename( $ruta ); // xzicLDofoUJtaSZ2H9APwxI3ublCxWi46G6tGi9A.png
-
-            return 'vacantes/imagenes/' . $nombreImagen;
-        }, $imagenes );
-
-        // guardamos la vacante
-        auth()->user()->vacantes()->create( [
+        // guardamos la vacante y recuperamos los datos de la vacante incluyendo el id generado
+        $vacanteCreada = auth()->user()->vacantes()->create( [
             'titulo'         => $request->titulo,
             'descripcion'    => $request->descripcion,
             'categoria_id'   => $request->categoria,
             'experiencia_id' => $request->experiencia,
             'ubicacion_id'   => $request->ubicacion,
             'salario_id'     => $request->salario,
-            'imagen'         => json_encode( $imagenes ),
+            'imagen'         => '',
             'skills'         => $request->skills,
         ] );
 
-        // logica para mover las imagenes de la carpeta temporal a la carpeta de las vacantes
-        $rutaTemporal = 'temp/' . auth()->user()->id . '/vacantes/imagenes';
-        $rutaVacante  = 'vacantes/imagenes';
+        $imagenes = json_decode( $request->imagen );
 
-        // $imagenesTemp = Storage::disk( 'public' )->files( $rutaTemporal );
-        // iteramos sobre las imagenes que se subieron en el formulario y las movemos a la carpeta de las vacantes
-        foreach ( $imagenes as $ruta ) {
-            $nombreImagen = basename( $ruta ); // xzicLDofoUJtaSZ2H9APwxI3ublCxWi46G6tGi9A.png
+        $rutaVacante = 'vacantes/' . $vacanteCreada->id;
 
-            if ( Storage::disk( 'public' )->exists( $rutaTemporal . '/' . $nombreImagen ) ) {
+        $this->moverArchivos( $imagenes, $rutaVacante );
+
+        foreach ( $imagenes as $key => $ruta ) {
+            $nombre_imagen  = basename( $ruta );
+            $imagenes[$key] = $rutaVacante . '/' . $nombre_imagen;
+        }
+
+        $vacanteCreada->imagen = json_encode( $imagenes );
+        $vacanteCreada->save();
+
+        return redirect()
+            ->route( 'vacantes.index' )
+            ->with( 'success', 'Vacante creada correctamente' );
+    }
+
+    /**
+     * @param array $archivos
+     * @param string $rutaDestino
+     */
+    private function moverArchivos(
+        array $archivos,
+        string $rutaDestino
+    ) {
+        // agregamos / a $rutaDestino por si falta
+        $rutaDestino = rtrim( $rutaDestino, '/\\' ) . '/';
+
+        foreach ( $archivos as $ruta ) {
+            $nombreArchivo = basename( $ruta );
+
+            if ( Storage::disk( 'public' )->exists( $ruta ) ) {
                 Storage::disk( 'public' )
                     ->move(
-                        $rutaTemporal . '/' . $nombreImagen,
-                        $rutaVacante . '/' . $nombreImagen
+                        $ruta,
+                        $rutaDestino . $nombreArchivo
                     );
             }
         }
-
-        return redirect()->route( 'vacantes.index' )->with( 'success', 'Vacante creada correctamente' );
     }
 
     /**
