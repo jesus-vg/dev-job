@@ -13,235 +13,248 @@ use Illuminate\Support\Facades\Storage;
 class VacanteController extends Controller
 {
 
-    public function __construct()
-    {
-        // indicamos que solo los usuarios autenticados y verificados pueden acceder a los metodos de este controlador
-        $this->middleware( ['auth', 'verified'] );
-    }
+	public function __construct()
+	{
+		// indicamos que solo los usuarios autenticados y verificados pueden acceder a los metodos de este controlador
+		$this->middleware( ['auth', 'verified'] );
+	}
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view( 'vacantes.index', [
-            // 'vacantes' => Vacante::all(),
-        ] );
-    }
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+	 */
+	public function index()
+	{
+		$vacantes = Vacante::select( 'id', 'titulo', 'slug', 'categoria_id', 'activo', 'created_at' )
+			->whereUserId( auth()->user()->id )
+			->paginate( 1, ['*'], 'vacantes' );
 
-    /**
-     * Muestra el formulario para crear una nueva vacante
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $catagorias   = Categoria::select( 'id', 'nombre' )->get();
-        $experiencias = Experiencia::select( 'id', 'nombre' )->get();
-        $ubicaciones  = Ubicacion::select( 'id', 'nombre' )->get();
-        $salarios     = Salario::select( 'id', 'nombre' )->get();
+		return view( 'vacantes.index', [
+			'vacantes' => $vacantes,
+		] );
+	}
 
-        // mostramos las imagenes que ya se han subido en el formulario (carpeta temporal)
-        $rutaTemporal = 'temp/' . auth()->user()->id . '/vacantes/imagenes';
-        $imagenesTemp = Storage::disk( 'public' )->files( $rutaTemporal );
+	/**
+	 * Muestra el formulario para crear una nueva vacante
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create()
+	{
+		$catagorias   = Categoria::select( 'id', 'nombre' )->get();
+		$experiencias = Experiencia::select( 'id', 'nombre' )->get();
+		$ubicaciones  = Ubicacion::select( 'id', 'nombre' )->get();
+		$salarios     = Salario::select( 'id', 'nombre' )->get();
 
-        return view( 'vacantes.create', [
-            'categorias'   => $catagorias,
-            'experiencias' => $experiencias,
-            'ubicaciones'  => $ubicaciones,
-            'salarios'     => $salarios,
-            'imagenesTemp' => $imagenesTemp,
-        ] );
-    }
+		// mostramos las imagenes que ya se han subido en el formulario (carpeta temporal)
+		$rutaTemporal = 'temp/' . auth()->user()->id . '/vacantes/imagenes';
+		$imagenesTemp = Storage::disk( 'public' )->files( $rutaTemporal );
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store( Request $request )
-    {
-        $request->validate(
-            [
-                'titulo'      => 'required|string|max:255',
-                'descripcion' => 'required|string|min:50',
-                'categoria'   => 'required|integer',
-                'experiencia' => 'required|integer',
-                'ubicacion'   => 'required|integer',
-                'salario'     => 'required|integer',
-                'imagen'      => 'required|json|min:25',
-                'skills'      => 'required|string|min:5|max:255',
-            ],
-            [
-                'imagen.required' => 'Seleccione una imagen',
-                // Personalizamos el mensaje de error para cuando los caracteres sean menores a 25
-                // se valida en caso de que se manipule el json ya que un valor esperado es (minimo 1 archivo):
-                // "[
-                //         "temp/1/vacantes/imagenes/xzicLDofoUJtaSZ2H9APwxI3ublCxWi46G6tGi9A.png",
-                //         "temp/1/vacantes/imagenes/YVw0rxd1CqS0A16EiiEiBDYdoqBLJxa1aGB0NAu5.png"
-                // ]"
-                'imagen.min'      => 'Seleccione una imagen',
-                'skills.min'      => 'Seleccione minimo 3 skills',
-            ]
-        );
+		return view( 'vacantes.create', [
+			'categorias'   => $catagorias,
+			'experiencias' => $experiencias,
+			'ubicaciones'  => $ubicaciones,
+			'salarios'     => $salarios,
+			'imagenesTemp' => $imagenesTemp,
+		] );
+	}
 
-        // guardamos la vacante y recuperamos los datos de la vacante incluyendo el id generado
-        $vacanteCreada = auth()->user()->vacantes()->create( [
-            'titulo'         => $request->titulo,
-            'descripcion'    => $request->descripcion,
-            'categoria_id'   => $request->categoria,
-            'experiencia_id' => $request->experiencia,
-            'ubicacion_id'   => $request->ubicacion,
-            'salario_id'     => $request->salario,
-            'imagen'         => '',
-            'skills'         => $request->skills,
-        ] );
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store( Request $request )
+	{
+		$request->validate(
+			[
+				'titulo'      => 'required|string|max:255',
+				'descripcion' => 'required|string|min:50',
+				'categoria'   => 'required|integer',
+				'experiencia' => 'required|integer',
+				'ubicacion'   => 'required|integer',
+				'salario'     => 'required|integer',
+				'imagen'      => 'required|json|min:25',
+				'skills'      => 'required|string|min:5|max:255',
+			],
+			[
+				'imagen.required' => 'Seleccione una imagen',
+				// Personalizamos el mensaje de error para cuando los caracteres sean menores a 25
+				// se valida en caso de que se manipule el json ya que un valor esperado es (minimo 1 archivo):
+				// "[
+				//         "temp/1/vacantes/imagenes/xzicLDofoUJtaSZ2H9APwxI3ublCxWi46G6tGi9A.png",
+				//         "temp/1/vacantes/imagenes/YVw0rxd1CqS0A16EiiEiBDYdoqBLJxa1aGB0NAu5.png"
+				// ]"
+				'imagen.min'      => 'Seleccione una imagen',
+				'skills.min'      => 'Seleccione minimo 3 skills',
+			]
+		);
 
-        $imagenes = json_decode( $request->imagen );
+		// guardamos la vacante y recuperamos los datos de la vacante incluyendo el id generado
+		$vacanteCreada = auth()->user()->vacantes()->create( [
+			'titulo'         => $request->titulo,
+			'descripcion'    => $request->descripcion,
+			'categoria_id'   => $request->categoria,
+			'experiencia_id' => $request->experiencia,
+			'ubicacion_id'   => $request->ubicacion,
+			'salario_id'     => $request->salario,
+			'imagen'         => '',
+			'skills'         => $request->skills,
+		] );
 
-        $rutaVacante = 'vacantes/' . $vacanteCreada->id;
+		$imagenes = json_decode( $request->imagen );
 
-        $this->moverArchivos( $imagenes, $rutaVacante );
+		$rutaVacante = 'vacantes/' . $vacanteCreada->id;
 
-        foreach ( $imagenes as $key => $ruta ) {
-            $nombre_imagen  = basename( $ruta );
-            $imagenes[$key] = $rutaVacante . '/' . $nombre_imagen;
-        }
+		$this->moverArchivos( $imagenes, $rutaVacante );
 
-        $vacanteCreada->imagen = json_encode( $imagenes );
-        $vacanteCreada->save();
+		foreach ( $imagenes as $key => $ruta ) {
+			$nombre_imagen    = basename( $ruta );
+			$imagenes[ $key ] = $rutaVacante . '/' . $nombre_imagen;
+		}
 
-        return redirect()
-            ->route( 'vacantes.index' )
-            ->with( 'success', 'Vacante creada correctamente' );
-    }
+		$vacanteCreada->imagen = json_encode( $imagenes );
+		$vacanteCreada->save();
 
-    /**
-     * @param array $archivos
-     * @param string $rutaDestino
-     */
-    private function moverArchivos(
-        array $archivos,
-        string $rutaDestino
-    ) {
-        // agregamos / a $rutaDestino por si falta
-        $rutaDestino = rtrim( $rutaDestino, '/\\' ) . '/';
+		return redirect()
+			->route( 'vacantes.index' )
+			->with( 'success', 'Vacante creada correctamente' );
+	}
 
-        foreach ( $archivos as $ruta ) {
-            $nombreArchivo = basename( $ruta );
+	/**
+	 * @param array  $archivos
+	 * @param string $rutaDestino
+	 */
+	private function moverArchivos(
+		array  $archivos,
+		string $rutaDestino
+	)
+	{
+		// agregamos / a $rutaDestino por si falta
+		$rutaDestino = rtrim( $rutaDestino, '/\\' ) . '/';
 
-            if ( Storage::disk( 'public' )->exists( $ruta ) ) {
-                Storage::disk( 'public' )
-                    ->move(
-                        $ruta,
-                        $rutaDestino . $nombreArchivo
-                    );
-            }
-        }
-    }
+		foreach ( $archivos as $ruta ) {
+			$nombreArchivo = basename( $ruta );
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Vacante  $vacante
-     * @return \Illuminate\Http\Response
-     */
-    public function show( Vacante $vacante )
-    {
-        //
-    }
+			if ( Storage::disk( 'public' )->exists( $ruta ) ) {
+				Storage::disk( 'public' )
+					->move(
+						$ruta,
+						$rutaDestino . $nombreArchivo
+					);
+			}
+		}
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Vacante  $vacante
-     * @return \Illuminate\Http\Response
-     */
-    public function edit( Vacante $vacante )
-    {
-        //
-    }
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param \App\Models\Vacante $vacante
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show( Vacante $vacante )
+	{
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Vacante  $vacante
-     * @return \Illuminate\Http\Response
-     */
-    public function update(
-        Request $request,
-        Vacante $vacante
-    ) {
-        //
-    }
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param \App\Models\Vacante $vacante
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit( Vacante $vacante )
+	{
+		//
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Vacante  $vacante
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy( Vacante $vacante )
-    {
-        //
-    }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Models\Vacante      $vacante
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(
+		Request $request,
+		Vacante $vacante
+	)
+	{
+		//
+	}
 
-    /**
-     * Metodo para subir imagenes.
-     * Se utiliza unicamente al crear una nueva vacante
-     * @param Request $request
-     */
-    public function imagenUpload( Request $request )
-    {
-        // Validamos los datos del formulario
-        $request->validate( [
-            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ] );
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param \App\Models\Vacante $vacante
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy( Vacante $vacante )
+	{
+		//
+	}
 
-        $usuario = auth()->user();
+	/**
+	 * Metodo para subir imagenes.
+	 * Se utiliza unicamente al crear una nueva vacante
+	 *
+	 * @param Request $request
+	 */
+	public function imagenUpload( Request $request )
+	{
+		// Validamos los datos del formulario
+		$request->validate( [
+			'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+		] );
 
-        $rutaTemporal = 'temp/' . $usuario->id . '/vacantes/imagenes';
+		$usuario = auth()->user();
 
-        // subimos la imagen al servidor en una carpeta temporal
-        $ruta = $request->file( 'imagen' )->store( $rutaTemporal, 'public' );
+		$rutaTemporal = 'temp/' . $usuario->id . '/vacantes/imagenes';
 
-        return response()->json( [
-            'mensaje'   => 'ok',
-            'path_temp' => $ruta,
-        ] );
-    }
+		// subimos la imagen al servidor en una carpeta temporal
+		$ruta = $request->file( 'imagen' )->store( $rutaTemporal, 'public' );
 
-    /**
-     * Metodo para eliminar una imagen
-     * @param Request $request
-     */
-    public function imagenDelete( Request $request )
-    {
-        if ( $request->ajax() ) {
+		return response()->json( [
+			'mensaje'   => 'ok',
+			'path_temp' => $ruta,
+		] );
+	}
 
-            $request->validate( [
-                'imagen' => 'required|string',
-            ] );
+	/**
+	 * Metodo para eliminar una imagen
+	 *
+	 * @param Request $request
+	 */
+	public function imagenDelete( Request $request )
+	{
+		if ( $request->ajax() ) {
 
-            $user = auth()->user();
+			$request->validate( [
+				'imagen' => 'required|string',
+			] );
 
-            $pathTemp = explode( '/', $request->imagen );
+			$user = auth()->user();
 
-            // validamos que la ruta sea la correcta temp/usuario_id/...
-            if ( $pathTemp[0] == 'temp' && $pathTemp[1] == $user->id ) {
-                // eliminamos la imagen del servidor si existe
-                if ( Storage::disk( 'public' )->exists( $request->imagen ) ) {
-                    Storage::disk( 'public' )->delete( $request->imagen );
-                }
-            }
+			$pathTemp = explode( '/', $request->imagen );
 
-            return response()->json( [
-                'mensaje' => 'ok',
-            ] );
-        }
-    }
+			// validamos que la ruta sea la correcta temp/usuario_id/...
+			if ( $pathTemp[ 0 ] == 'temp' && $pathTemp[ 1 ] == $user->id ) {
+				// eliminamos la imagen del servidor si existe
+				if ( Storage::disk( 'public' )->exists( $request->imagen ) ) {
+					Storage::disk( 'public' )->delete( $request->imagen );
+				}
+			}
+
+			return response()->json( [
+				'mensaje' => 'ok',
+			] );
+		}
+	}
 }
