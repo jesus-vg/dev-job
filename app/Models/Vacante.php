@@ -11,6 +11,9 @@ class Vacante extends Model
 {
     use HasFactory, Sluggable;
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'titulo',
         'slug',
@@ -27,6 +30,7 @@ class Vacante extends Model
      * Indicamos que se usará el campo slug en lugar del campo id para buscarlo en la base de datos
      * @return string
      * @link model-binding https://aprendible.com/series/laravel-desde-cero/lecciones/route-model-binding
+     * @see https://laravel.com/docs/9.x/routing#customizing-the-key
      */
     public function getRouteKeyName()
     {
@@ -47,6 +51,15 @@ class Vacante extends Model
                 'source' => 'titulo', // el campo que se va a usar para generar el slug
             ],
         ];
+    }
+
+    /**
+     * Relacionamos las vacantes con categoria
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function categoria()
+    {
+        return $this->belongsTo( Categoria::class, 'categoria_id' );
     }
 
 }
