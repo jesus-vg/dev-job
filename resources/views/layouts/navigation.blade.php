@@ -43,6 +43,10 @@
 						<button
 							class="flex items-center text-sm font-medium hover:text-gray-300 hover:border-gray-300 focus:outline-none focus:text-gray-300 focus:border-teal-500 transition duration-150 ease-in-out"
 						>
+							<img src="https://ui-avatars.com/api/?size=30&background=0D8ABC&color=fff&name={{ Auth::user()->name }}"
+								 alt="{{ Auth::user()->name }}"
+								 class="rounded-lg mr-3"
+							>
 							<div>{{ Auth::user()->name }}</div>
 
 							<div class="ml-1">
