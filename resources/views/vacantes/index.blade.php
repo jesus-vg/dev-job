@@ -1,7 +1,7 @@
 <x-app-layout>
 	<x-slot name="header">
-		<div class="flex justify-between container mx-auto">
-			<h2 class="font-semibold text-xl text-teal-500 leading-tight">
+		<div class="container mx-auto flex justify-between">
+			<h2 class="text-xl font-semibold leading-tight text-teal-500">
 				Adiministrar tus vacantes
 			</h2>
 			<a
@@ -13,43 +13,42 @@
 
 	<div class="relative">
 		@if (session('success'))
-			<p class="bg-green-300 text-green-800 p-3 rounded-md absolute border-l-2 border-green-800 top-0 right-0">
+			<p class="absolute top-0 right-0 rounded-md border-l-2 border-green-800 bg-green-300 p-3 text-green-800">
 				{{ session('success') }}
 			</p>
 		@endif
 
-		<div class="container shadow-md bg-white rounded-md mx-auto mt-4 p-3 ">
+		<div class="container mx-auto mt-4 rounded-md bg-white p-3 shadow-md">
 			<h1>Vacantes disponibles</h1>
-
 
 			<div class="flex flex-col">
 				<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-					<div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
+					<div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
 						<div class="overflow-hidden shadow-md sm:rounded-lg">
 							<table class="min-w-full">
 								<thead class="bg-gray-50 dark:bg-gray-700">
 									<tr>
 										<th
 											scope="col"
-											class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+											class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
 										>
-											Name
+											Nombre
 										</th>
 										<th
 											scope="col"
-											class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+											class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
 										>
 											Color
 										</th>
 										<th
 											scope="col"
-											class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+											class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
 										>
-											Category
+											Categoria
 										</th>
 										<th
 											scope="col"
-											class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+											class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
 										>
 											Price
 										</th>
@@ -63,73 +62,46 @@
 								</thead>
 								<tbody>
 
-									<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-										<td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-											Apple MacBook Pro 17"
-										</td>
-										<td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-											Sliver
-										</td>
-										<td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-											Laptop
-										</td>
-										<td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-											$2999
-										</td>
-										<td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-											<a
-												href="#"
-												class="text-blue-600 dark:text-blue-500 hover:underline"
-											>Edit</a>
-										</td>
-									</tr>
+									@foreach ($vacantes as $vacante)
+										<tr class="border-b bg-white dark:border-gray-700 dark:bg-gray-800">
+											<td class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-900 dark:text-white">
+												{{ $vacante->titulo }}
+												<br>
+												<span class="text-gray-400">Categoria: {{ $vacante->categoria->nombre }}</span>
+											</td>
+											<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
+												Sliver
+											</td>
+											<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
+												Laptop
+											</td>
+											<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
+												$2999
+											</td>
+											<td class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium">
+												<a
+													href="#"
+													class="text-blue-500 hover:underline"
+												>Edit</a>
+												<a
+													href="#"
+													class="text-red-500 hover:underline"
+												>Eliminar</a>
+												<a
+													href="#"
+													class="text-teal-500 hover:underline dark:text-blue-500"
+												>ver</a>
 
-									<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-										<td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-											Apple Imac 27"
-										</td>
-										<td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-											White
-										</td>
-										<td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-											Desktop Pc
-										</td>
-										<td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-											$1999
-										</td>
-										<td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-											<a
-												href="#"
-												class="text-blue-600 dark:text-blue-500 hover:underline"
-											>Edit</a>
-										</td>
-									</tr>
-
-									<tr class="bg-white dark:bg-gray-800">
-										<td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-											Apple Magic Mouse 2
-										</td>
-										<td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-											White
-										</td>
-										<td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-											Accessories
-										</td>
-										<td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-											$99
-										</td>
-										<td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-											<a
-												href="#"
-												class="text-blue-600 dark:text-blue-500 hover:underline"
-											>Edit</a>
-										</td>
-									</tr>
+											</td>
+										</tr>
+									@endforeach
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
+				{{-- Paginacion --}}
+				{{ $vacantes->links() }}
 			</div>
 
 		</div>
