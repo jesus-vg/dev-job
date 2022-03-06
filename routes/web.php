@@ -32,6 +32,11 @@ Route::get( '/dashboard', function () {
 Route::get( '/vacantes', [VacanteController::class, 'index'] )->name( 'vacantes.index' );
 Route::get( '/vacantes/crear', [VacanteController::class, 'create'] )->name( 'vacantes.create' );
 Route::post( '/vacantes', [VacanteController::class, 'store'] )->name( 'vacantes.store' );
+Route::get( '/vacantes/{vacante}', [VacanteController::class, 'show'] )->name( 'vacantes.show' );
+Route::get( '/vacantes/{vacante}/editar', [VacanteController::class, 'edit'] )->name( 'vacantes.edit' );
+Route::put( '/vacantes/{vacante}', [VacanteController::class, 'update'] )->name( 'vacantes.update' );
+Route::delete( '/vacantes/{vacante}', [VacanteController::class, 'destroy'] )->name( 'vacantes.destroy' );
+// Route::resource( 'vacantes', VacanteController::class );
 
 // subida de imagenes
 Route::post( '/vacantes/imagen-upload', [VacanteController::class, 'imagenUpload'] )->name( 'vacantes.imagen-upload' );
