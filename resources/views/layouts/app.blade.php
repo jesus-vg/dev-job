@@ -51,7 +51,7 @@
 
 		<!-- Page Content -->
 		<main
-			class="mt-7 flex-1"
+			class="my-7 flex-1"
 			id="app"
 		>
 			{{ $slot }}
