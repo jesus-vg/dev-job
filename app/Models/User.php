@@ -43,12 +43,12 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Obtiene las vacantes que ha creado el usuario
+     * Relacionamos las vacantes con el usuario
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function vacantes()
     {
-        return $this->hasMany( Vacante::class, 'user_id' );
+        return $this->hasMany( Vacante::class, 'usuario_id' );
     }
 }
