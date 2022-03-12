@@ -26,18 +26,21 @@ Route::get( '/dashboard', function () {
 } )->middleware( ['auth', 'verified'] )->name( 'dashboard' );
 
 // doc para rutas tipo resource controller
-// https: //laravel.com/docs/9.x/controllers#actions-handled-by-resource-controller
+// https://laravel.com/docs/9.x/controllers#actions-handled-by-resource-controller
 
+// doc https://aprendible.com/series/laravel-desde-cero/lecciones/route-resource
 // Ruta de vacantes
-Route::get( '/vacantes', [VacanteController::class, 'index'] )->name( 'vacantes.index' );
-Route::get( '/vacantes/crear', [VacanteController::class, 'create'] )->name( 'vacantes.create' );
-Route::post( '/vacantes', [VacanteController::class, 'store'] )->name( 'vacantes.store' );
-Route::get( '/vacantes/{vacante}', [VacanteController::class, 'show'] )->name( 'vacantes.show' );
-Route::get( '/vacantes/{vacante}/editar', [VacanteController::class, 'edit'] )->name( 'vacantes.edit' );
-Route::put( '/vacantes/{vacante}', [VacanteController::class, 'update'] )->name( 'vacantes.update' );
-Route::delete( '/vacantes/{vacante}', [VacanteController::class, 'destroy'] )->name( 'vacantes.destroy' );
-// Route::resource( 'vacantes', VacanteController::class );
+Route::resource( 'vacantes', VacanteController::class );
+// Route::resource( 'vacantes', VacanteController::class )
+//     ->names( 'vacantes' ) // nombre de las rutas ej. vacantes.index, vacantes.create, vacantes.store, etc
+//     ->parameters( [
+//         'vacantes' => 'vacante', // nombre del parametro que se usa en las rutas ej. /vacantes/{vacante} (vacante es el parametro)
+//     ] );
 
-// subida de imagenes
-Route::post( '/vacantes/imagen-upload', [VacanteController::class, 'imagenUpload'] )->name( 'vacantes.imagen-upload' );
-Route::post( '/vacantes/imagen-delete', [VacanteController::class, 'imagenDelete'] )->name( 'vacantes.imagen-delete' );
+Route::controller( VacanteController::class )
+    ->prefix( 'vacantes' )
+    ->group( function () {
+        // subida de imagenes
+        Route::post( '/imagen-upload', 'imagenUpload' )->name( 'vacantes.imagen-upload' );
+        Route::post( '/imagen-delete', 'imagenDelete' )->name( 'vacantes.imagen-delete' );
+    } );
