@@ -62,4 +62,40 @@ class Vacante extends Model
         return $this->belongsTo( Categoria::class, 'categoria_id' );
     }
 
+    /**
+     * Relacionamos las vacantes con experiencia
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function experiencia()
+    {
+        return $this->belongsTo( Experiencia::class, 'experiencia_id' );
+    }
+
+    /**
+     * Relacionamos las vacantes con ubicacion
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function ubicacion()
+    {
+        return $this->belongsTo( Ubicacion::class, 'ubicacion_id' );
+    }
+
+    /**
+     * Relacionamos las vacantes con salario
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function salario()
+    {
+        return $this->belongsTo( Salario::class, 'salario_id' );
+    }
+
+    /**
+     * Relacionamos las vacantes con usuario
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuario()
+    {
+        return $this->belongsTo( User::class, 'usuario_id' );
+    }
+
 }
