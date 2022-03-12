@@ -26,6 +26,13 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // https://laravel.com/docs/9.x/controllers#restful-localizing-resource-uris
+        // Renombramos los verbos por defecto a los verbos en español, ej. /vacantes/crear, /vacantes/{vacante}/editar
+        Route::resourceVerbs( [
+            'create' => 'crear',
+            'edit'   => 'editar',
+        ] );
+
         $this->configureRateLimiting();
 
         $this->routes( function () {
