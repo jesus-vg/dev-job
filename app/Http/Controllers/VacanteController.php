@@ -27,7 +27,7 @@ class VacanteController extends Controller
     public function index()
     {
         $vacantes = Vacante::select( 'id', 'titulo', 'slug', 'categoria_id', 'activo', 'created_at' )
-            ->whereUserId( auth()->user()->id )
+            ->whereUsuarioId( auth()->user()->id )
             ->paginate( 5, ['*'], 'vacantes' );
 
         return view( 'vacantes.index', [

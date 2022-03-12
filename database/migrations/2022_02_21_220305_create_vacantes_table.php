@@ -55,8 +55,8 @@ return new class extends Migration
             $table->string( 'skills' );
             $table->text( 'imagen' );
             $table->boolean( 'activo' )->default( true );
-            // relacionamos con la tabla ubicaciones
-            $table->foreignId( 'user_id' )->constrained()->onDelete( 'cascade' )->references( 'id' )->on( 'users' ); // eliminamos el usuario si se elimina la vacante con el metodo cascade
+            // relacionamos con la tabla usuarios
+            $table->foreignId( 'usuario_id' )->constrained()->onDelete( 'cascade' )->references( 'id' )->on( 'users' ); // eliminamos el usuario si se elimina la vacante con el metodo cascade
             $table->timestamps();
         } );
     }
