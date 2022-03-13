@@ -19,91 +19,88 @@
 		@endif
 
 		<div class="container mx-auto mt-4 rounded-md bg-white p-3 shadow-md">
-			<h1>Vacantes disponibles</h1>
 
-			<div class="flex flex-col">
-				<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-					<div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-						<div class="overflow-hidden shadow-md sm:rounded-lg">
-							<table class="min-w-full">
-								<thead class="bg-gray-50 dark:bg-gray-700">
-									<tr>
-										<th
-											scope="col"
-											class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
-										>
-											Nombre
-										</th>
-										<th
-											scope="col"
-											class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
-										>
-											Color
-										</th>
-										<th
-											scope="col"
-											class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
-										>
-											Categoria
-										</th>
-										<th
-											scope="col"
-											class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
-										>
-											Price
-										</th>
-										<th
-											scope="col"
-											class="relative py-3 px-6"
-										>
-											<span class="sr-only">Edit</span>
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-
-									@foreach ($vacantes as $vacante)
-										<tr class="border-b bg-white dark:border-gray-700 dark:bg-gray-800">
-											<td class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-900 dark:text-white">
-												{{ $vacante->titulo }}
-												<br>
-												<span class="text-gray-400">Categoria: {{ $vacante->categoria->nombre }}</span>
-											</td>
-											<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
-												Sliver
-											</td>
-											<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
-												Laptop
-											</td>
-											<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
-												$2999
-											</td>
-											<td class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium">
-												<a
-													href="#"
-													class="text-blue-500 hover:underline"
-												>Edit</a>
-												<a
-													href="#"
-													class="text-red-500 hover:underline"
-												>Eliminar</a>
-												<a
-													href="#"
-													class="text-teal-500 hover:underline dark:text-blue-500"
-												>ver</a>
-
-											</td>
+			@if (count($vacantes) > 0)
+				<h1>Vacantes disponibles</h1>
+				<div class="flex flex-col">
+					<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+						<div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+							<div class="overflow-hidden shadow-md sm:rounded-lg">
+								<table class="min-w-full">
+									<thead class="bg-gray-50 dark:bg-gray-700">
+										<tr>
+											<th
+												scope="col"
+												class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
+											>
+												Nombre
+											</th>
+											<th
+												scope="col"
+												class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
+											>
+												Candidatos
+											</th>
+											<th
+												scope="col"
+												class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
+											>
+												Estado
+											</th>
+											<th
+												scope="col"
+												class="relative py-3 px-6"
+											>
+												<span class="sr-only">Edit</span>
+											</th>
 										</tr>
-									@endforeach
-								</tbody>
-							</table>
+									</thead>
+									<tbody>
+										@foreach ($vacantes as $vacante)
+											<tr class="border-b bg-white dark:border-gray-700 dark:bg-gray-800">
+												<td class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-900 dark:text-white">
+													{{ $vacante->titulo }}
+													<br>
+													<span class="text-gray-400">Categoria: {{ $vacante->categoria->nombre }}</span>
+												</td>
+												<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
+													Candidatos
+												</td>
+												<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
+													@if ($vacante->activo)
+														<span class="text-green-500">Activo</span>
+													@else
+														<span class="text-red-500">Inactivo</span>
+													@endif
+												</td>
+												<td class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium">
+													<a
+														href="#"
+														class="text-blue-500 hover:underline"
+													>Edit</a>
+													<a
+														href="#"
+														class="text-red-500 hover:underline"
+													>Eliminar</a>
+													<a
+														href="{{ route('vacantes.show', $vacante) }}"
+														class="text-teal-500 hover:underline dark:text-blue-500"
+													>ver</a>
+
+												</td>
+											</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
+					{{-- Paginacion --}}
+					{{ $vacantes->links() }}
 				</div>
-				{{-- Paginacion --}}
-				{{ $vacantes->links() }}
-			</div>
-
+			@else
+				<p class="my-5 text-center text-3xl font-medium text-gray-400">No hay vacantes creadas</p>
+			@endif
 		</div>
 	</div>
 </x-app-layout>
