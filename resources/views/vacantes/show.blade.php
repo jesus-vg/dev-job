@@ -30,21 +30,23 @@
 					Experiencia: <span class="font-normal">{{ $vacante->experiencia->nombre }}</span>
 				</p>
 
-				{{-- imagenes, usamo el component lightbox para mostrar las imagenes (usamos el evento onclick) --}}
-				<div class="my-5">
-					<div class="flex flex-wrap justify-center">
-						@php
-							$imagenes = json_decode($vacante->imagen);
-						@endphp
+				@php
+					$imagenes = json_decode($vacante->imagen);
+				@endphp
 
+				{{-- imagenes, usamos el component lightbox para mostrar las imagenes (usamos el evento onclick) --}}
+				<div class="my-5">
+					<div class="flex flex-wrap">
 						@foreach ($imagenes as $key => $urlImagen)
-							<div class="w-52 rounded-lg">
-								<img
-									src="{{ asset('storage/' . $urlImagen) }}"
-									alt="{{ $vacante->titulo }}"
-									class="w-full cursor-pointer"
-									onclick="openModal();currentSlide({{ $key + 1 }})"
-								>
+							<div class="m-1 w-52 overflow-hidden rounded-lg shadow-md">
+								<div class="aspect-w-16 aspect-h-9 bg-gray-400">
+									<img
+										src="{{ asset('storage/' . $urlImagen) }}"
+										alt="{{ $vacante->titulo }}"
+										class="h-full w-full cursor-pointer object-cover"
+										onclick="openModal();currentSlide({{ $key + 1 }})"
+									>
+								</div>
 							</div>
 						@endforeach
 					</div>
@@ -69,113 +71,9 @@
 					{!! Purify::clean($vacante->descripcion) !!}
 				</div>
 			</div>
-			<aside class="mx-1 rounded bg-gray-800 p-3 text-gray-100 md:mx-3 md:w-2/5 md:px-4 xl:p-10">
-				<h2 class="mb-3 text-2xl">Contacta al reclutador</h2>
-				<form
-					action=""
-					method="post"
-					enctype="multipart/form-data"
-				>
-					@csrf
-					<div class="mb-4">
-						<label
-							for="nombre"
-							class="mb-2 block text-sm font-bold text-gray-400"
-						>
-							Nombre
-						</label>
-						<input
-							type="text"
-							name="nombre"
-							id="nombre"
-							class="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow placeholder:text-gray-400 focus:outline-none @error('nombre') border-red-500 @enderror"
-							placeholder="Tu nombre"
-							value="{{ old('nombre', '') }}"
-							required
-						>
-						@error('nombre')
-							<p class="mt-4 text-xs italic text-red-500">
-								{{ $message }}
-							</p>
-						@enderror
-					</div>
-					<div class="mb-4">
-						<label
-							for="email"
-							class="mb-2 block text-sm font-bold text-gray-400"
-						>
-							Email
-						</label>
-						<input
-							type="email"
-							name="email"
-							id="email"
-							class="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow placeholder:text-gray-400 focus:outline-none @error('email') border-red-500 @enderror"
-							placeholder="Tu email"
-							value="{{ old('email', '') }}"
-							required
-						>
-						@error('email')
-							<p class="mt-4 text-xs italic text-red-500">
-								{{ $message }}
-							</p>
-						@enderror
-					</div>
-					<div class="mb-4">
-						<label
-							for="mensaje"
-							class="mb-2 block text-sm font-bold text-gray-400"
-						>
-							Mensaje
-						</label>
-						<textarea
-							name="mensaje"
-							id="mensaje"
-							class="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-							rows="3"
-							required
-						></textarea>
-					</div>
-					<div class="mb-4 text-gray-700">
-						<label
-							for="cv"
-							class="mb-2 block text-sm font-bold text-gray-400"
-						>
-							Elige un CV
-						</label>
-						<input
-							type="file"
-							name="cv"
-							id="cv"
-							class="hidden"
-							accept="application/pdf"
-							onchange="fileChange()"
-						>
-						<p
-							class="mb-2 py-2 text-sm text-gray-400"
-							id="fileName"
-						></p>
-						<button
-							type="button"
-							class="focus:shadow-outline rounded border-2 border-teal-500 py-2 px-4 font-bold text-white hover:border-teal-700 focus:outline-none"
-							id="btnCv"
-							onclick="document.getElementById('cv').click()"
-						>
-							Selecionar cv
-						</button>
-						@error('cv')
-							<p class="mt-3 text-xs italic text-red-500">
-								{{ $message }}
-							</p>
-						@enderror
-					</div>
-					<div class="text-center">
-						<button class="btn-primary mt-4">
-							Enviar
-						</button>
-					</div>
-				</form>
-			</aside>
+
+			@include('vacantes.form-contacto')
+
 		</div>
 	</div>
 
