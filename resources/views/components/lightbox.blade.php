@@ -1,22 +1,22 @@
 @props(['imagenes' => []])
 <div
 	id="lightbox"
-	class="fixed inset-0 z-10 hidden h-full w-full overflow-auto bg-gray-800/80 p-5"
+	class="fixed inset-0 z-10 hidden h-full w-full overflow-auto bg-gray-800/90 p-5"
 >
 	<span
 		class="absolute top-0 right-0 m-4 cursor-pointer text-3xl text-white"
 		onclick="closeModal()"
 	>&times;</span>
 
-	<div class="relative mx-auto mt-10 w-11/12 overflow-hidden rounded-lg bg-gray-500 sm:w-5/6 md:w-1/2 lg:w-1/3">
+	<div class="relative mx-auto mt-10 overflow-hidden rounded-lg bg-gray-500 sm:w-5/6 md:w-full xl:w-2/3">
 		@foreach ($imagenes as $key => $urlImagen)
-			<div class="mySlides hidden">
-				<div class="absolute top-0 select-none rounded-br-lg bg-gray-300 px-2 py-1 text-sm text-gray-700">
-					{{ $key + 1 }} / {{ $loop->count }}
-				</div>
+			<div class="absolute top-0 select-none rounded-br-lg bg-gray-300 px-2 py-1 text-sm text-gray-700">
+				{{ $key + 1 }} / {{ $loop->count }}
+			</div>
+			<div class="mySlides aspect-w-16 aspect-h-9 hidden">
 				<img
 					src="{{ asset('storage/' . $urlImagen) }}"
-					style="w-full"
+					class="object-contain"
 				>
 			</div>
 		@endforeach
@@ -41,7 +41,7 @@
 		@foreach ($imagenes as $key => $urlImagen)
 			<img
 				src="{{ asset('storage/' . $urlImagen) }}"
-				class="demo w-20 cursor-pointer rounded-lg"
+				class="demo m-1 w-20 cursor-pointer rounded-lg opacity-100"
 				onclick="currentSlide({{ $key + 1 }})"
 				alt=""
 			>
@@ -86,11 +86,12 @@
   }
 
   for (let i = 0; i < dots.length; i++) {
-   dots[i].className = dots[i].className.replace(" active", "");
+   dots[i].className = dots[i].className.replace(" opacity-100", " opacity-50");
   }
 
   slides[slideIndex - 1].style.display = "block";
-  dots[slideIndex - 1].className += " active";
+  dots[slideIndex - 1].className += " opacity-100";
+  dots[slideIndex - 1].classList.remove("opacity-50");
   captionText.innerHTML = dots[slideIndex - 1].alt;
  }
 
@@ -100,17 +101,6 @@
  const modal = document.getElementById("lightbox");
  //  evento para hacer scroll en el modal
  modal.addEventListener("wheel", (e) => {
-  e.preventDefault();
-  if (e.deltaY < 0) {
-   plusSlides(1);
-  } else {
-   plusSlides(-1);
-  }
- }, {
-  passive: false
- });
- //  evento para hacer scroll en el modal en movil
- modal.addEventListener("touchmove", (e) => {
   e.preventDefault();
   if (e.deltaY < 0) {
    plusSlides(1);
