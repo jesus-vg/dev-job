@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CandidatoController;
 use App\Http\Controllers\VacanteController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,3 +45,5 @@ Route::controller( VacanteController::class )
         Route::post( '/imagen-upload', 'imagenUpload' )->name( 'vacantes.imagen-upload' );
         Route::post( '/imagen-delete', 'imagenDelete' )->name( 'vacantes.imagen-delete' );
     } );
+
+Route::resource( 'candidatos', CandidatoController::class );
