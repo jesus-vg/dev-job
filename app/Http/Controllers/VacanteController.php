@@ -154,9 +154,14 @@ class VacanteController extends Controller
      * @param \App\Models\Vacante $vacante
      *
      * @return \Illuminate\Http\Response
+     *
+     * @link sesiones https://laravel.com/docs/9.x/session#retrieving-data
      */
     public function show( Vacante $vacante )
     {
+        // creamos una session para que el usuario pueda postular a la vacante desde el formulario contacto
+        session( ['vacante_id' => $vacante->id] );
+
         return view( 'vacantes.show', [
             'vacante' => $vacante,
         ] );
