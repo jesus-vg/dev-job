@@ -98,4 +98,13 @@ class Vacante extends Model
         return $this->belongsTo( User::class, 'usuario_id' );
     }
 
+    /**
+     * Relacionamos las vacantes con candidatos. relacion 1:N
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function candidatos()
+    {
+        return $this->hasMany( Candidato::class, 'vacante_id' );
+    }
+
 }
