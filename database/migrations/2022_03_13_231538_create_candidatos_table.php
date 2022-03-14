@@ -13,10 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('candidatos', function (Blueprint $table) {
+        Schema::create( 'candidatos', function ( Blueprint $table ) {
             $table->id();
+            $table->string( 'nombre' );
+            $table->string( 'email' );
+            $table->string( 'cv' );
+            // relacion con la tabla vacante
+            $table->foreignId( 'vacante_id' )->constrained()->references( 'id' )->on( 'vacantes' );
             $table->timestamps();
-        });
+        } );
     }
 
     /**
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('candidatos');
+        Schema::dropIfExists( 'candidatos' );
     }
 };
