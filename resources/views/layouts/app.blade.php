@@ -39,6 +39,7 @@
 </head>
 
 <body class="font-sans antialiased">
+	@include('partials.messages')
 	<div class="flex min-h-screen flex-col bg-gray-100">
 		@include('layouts.navigation')
 
