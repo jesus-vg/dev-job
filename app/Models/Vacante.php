@@ -90,10 +90,10 @@ class Vacante extends Model
     }
 
     /**
-     * Relacionamos las vacantes con usuario
+     * Relacionamos las vacantes con usuario (reclutador)
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function usuario()
+    public function reclutador()
     {
         return $this->belongsTo( User::class, 'usuario_id' );
     }

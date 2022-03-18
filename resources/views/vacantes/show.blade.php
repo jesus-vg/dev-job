@@ -12,7 +12,7 @@
 		<div class="mt-5 items-start md:flex">
 			<div class="w-3/5 text-gray-700">
 				<p class="my-2 font-bold">
-					Publicado por: <span class="font-normal">{{ $vacante->usuario->name }}</span>
+					Publicado por: <span class="font-normal">{{ $vacante->reclutador->name }}</span>
 				</p>
 				<p class="my-2 font-bold">
 					Publicado: <span class="font-normal">{{ $vacante->created_at->diffForHumans() }}</span>
