@@ -51,19 +51,20 @@ class CandidatoController extends Controller
 
             $vacante_id = session( 'vacante_id' );
 
+            $vacante = Vacante::find( $vacante_id );
+
+            $candidato_nuevo = $vacante->candidatos()->create( [
+                'nombre' => $request->nombre,
+                'email'  => $request->email,
+                'cv'     => '',
+            ] );
+
+            // subimos el archivo una vez creado el candidato
             $rutaCv = $request->file( 'cv' )
                 ->store( 'vacantes/' . $vacante_id . '/cv', 'public' );
 
-            $vacante = Vacante::find( $vacante_id );
-            // dd( $vacante );
-            $vacante->candidatos()->create( [
-                'nombre' => $request->nombre,
-                'email'  => $request->email,
-                'cv'     => $rutaCv,
-            ] );
-
-            // eliminamos la session vacante_id
-            // session()->forget( 'vacante_id' );
+            $candidato_nuevo->cv = $rutaCv;
+            $candidato_nuevo->save();
 
             return back()->with( 'success', 'Gracias por postularse a la vacante, pronto nos comunicaremos con usted.' );
         }
