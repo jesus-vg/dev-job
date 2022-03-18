@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Candidato;
 use App\Models\Vacante;
+use App\Notifications\NuevoCandidato;
 use Illuminate\Http\Request;
 
 class CandidatoController extends Controller
@@ -65,6 +66,8 @@ class CandidatoController extends Controller
 
             $candidato_nuevo->cv = $rutaCv;
             $candidato_nuevo->save();
+
+            $vacante->reclutador->notify( new NuevoCandidato( $vacante ) );
 
             return back()->with( 'success', 'Gracias por postularse a la vacante, pronto nos comunicaremos con usted.' );
         }
