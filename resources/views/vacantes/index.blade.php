@@ -21,7 +21,7 @@
 		<div class="container mx-auto mt-4 rounded-md bg-white p-3 shadow-md">
 
 			@if (count($vacantes) > 0)
-				<h1>Vacantes disponibles</h1>
+				<h1 class="my-5 text-center text-gray-700">Vacantes disponibles</h1>
 				<div class="flex flex-col">
 					<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
 						<div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
