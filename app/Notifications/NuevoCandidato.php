@@ -27,7 +27,7 @@ class NuevoCandidato extends Notification
      */
     public function via( $notifiable )
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -43,6 +43,19 @@ class NuevoCandidato extends Notification
             ->line( $this->vacante->titulo )
             ->action( 'Ver candidatos', url( route( 'vacantes.show', [$this->vacante] ) ) )
             ->line( 'Gracias por usar nuestra aplicación' );
+    }
+
+    /**
+     * Notificaciones en la base de datos.
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toDatabase( $notifiable )
+    {
+        return [
+            'titulo' => $this->vacante->titulo,
+            'url'    => route( 'vacantes.show', [$this->vacante] ),
+        ];
     }
 
     /**
