@@ -39,6 +39,7 @@ class NuevoCandidato extends Notification
     public function toMail( $notifiable )
     {
         return ( new MailMessage )
+            ->greeting( 'Hola, ' . $notifiable->name )
             ->line( 'Has recibido un nuevo candidato para la vacante: ' )
             ->line( $this->vacante->titulo )
             ->action( 'Ver candidatos', url( route( 'vacantes.show', [$this->vacante] ) ) )
