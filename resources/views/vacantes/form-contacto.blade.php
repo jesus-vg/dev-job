@@ -4,6 +4,7 @@
 		action="{{ route('candidatos.store') }}"
 		method="post"
 		enctype="multipart/form-data"
+		onsubmit="validarFormulario()"
 	>
 		@csrf
 		<div class="mb-4">
@@ -17,7 +18,7 @@
 				type="text"
 				name="nombre"
 				id="nombre"
-				class="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow placeholder:text-gray-400 focus:outline-none @error('nombre') border-red-500 @enderror"
+				class="focus:shadow-outline @error('nombre') border-red-500 @enderror w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow placeholder:text-gray-400 focus:outline-none"
 				placeholder="Tu nombre"
 				value="{{ old('nombre', '') }}"
 				required
@@ -39,7 +40,7 @@
 				type="email"
 				name="email"
 				id="email"
-				class="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow placeholder:text-gray-400 focus:outline-none @error('email') border-red-500 @enderror"
+				class="focus:shadow-outline @error('email') border-red-500 @enderror w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow placeholder:text-gray-400 focus:outline-none"
 				placeholder="Tu email"
 				value="{{ old('email', '') }}"
 				required
@@ -49,21 +50,6 @@
 					{{ $message }}
 				</p>
 			@enderror
-		</div>
-		<div class="mb-4">
-			<label
-				for="mensaje"
-				class="mb-2 block text-sm font-bold text-gray-400"
-			>
-				Mensaje
-			</label>
-			<textarea
-    name="mensaje"
-    id="mensaje"
-    class="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-    rows="3"
-    required
-></textarea>
 		</div>
 		<div class="mb-4 text-gray-700">
 			<label
@@ -99,10 +85,13 @@
 			@enderror
 		</div>
 		<div class="text-center">
-			<button class="btn-primary mt-4">
+			<button
+				class="btn-primary mt-4"
+				id="btnForm"
+			>
 				Enviar
 			</button>
 		</div>
 	</form>
 </aside>
-{{-- usa script js (para subir archivos), ver en vacantes.show --}}
+{{-- usa script js (para subir archivos y enviar el formulario), ver en vacantes.show --}}

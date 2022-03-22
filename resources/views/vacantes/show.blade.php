@@ -88,6 +88,13 @@
 
 		  labelFileName.innerHTML = file ? file.name : 'Selecione un archivo pdf';
 		 }
+
+		 const validarFormulario = () => {
+		  const btnForm = document.getElementById('btnForm');
+
+		  btnForm.disabled = true;
+		  btnForm.innerHTML = 'Enviando...';
+		 }
 		</script>
 	</x-slot>
 
