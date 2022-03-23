@@ -64,7 +64,12 @@
 													<span class="text-gray-400">Categoria: {{ $vacante->categoria->nombre }}</span>
 												</td>
 												<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
-													Candidatos
+													@php
+														$candidatos = $vacante->candidatos->count();
+													@endphp
+													<a href="{{ route('candidatos.index', ['slugVacante' => $vacante->slug]) }}">
+														{{ $candidatos > 0 ? $candidatos . ' Candidatos' : 'No hay candidatos' }}
+													</a>
 												</td>
 												<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
 													@if ($vacante->activo)

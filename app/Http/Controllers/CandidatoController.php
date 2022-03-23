@@ -11,12 +11,27 @@ class CandidatoController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @link https://laravel.com/docs/9.x/pagination#appending-query-string-values
      */
-    public function index()
+    public function index( Request $request )
     {
-        //
+        $request->validate( [
+            'slugVacante' => 'required|string',
+        ] );
+
+        $vacante = Vacante::whereSlug( $request->slugVacante )->firstOrFail()->first();
+
+        $candidatos = Candidato::select( 'id', 'nombre', 'email', 'cv', 'created_at' )
+            ->whereVacanteId( $vacante->id )
+            ->latest()
+            ->paginate( 10, ['*'], 'pagina' );
+
+        $candidatos->appends( ['slugVacante' => $request->slugVacante] );
+
+        return view( 'candidatos.index', compact( 'candidatos', 'vacante' ) );
+
     }
 
     /**

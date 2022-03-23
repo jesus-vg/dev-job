@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CandidatoController;
+use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\VacanteController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,4 +47,11 @@ Route::controller( VacanteController::class )
         Route::post( '/imagen-delete', 'imagenDelete' )->name( 'vacantes.imagen-delete' );
     } );
 
-Route::resource( 'candidatos', CandidatoController::class );
+Route::middleware( ['auth', 'verified'] )->group( function () {
+    Route::get( '/notificaciones', NotificacionController::class )->name( 'notificaciones.index' );
+
+    Route::resource( 'candidatos', CandidatoController::class )->only( [
+        'index', 'store',
+    ] );
+
+} );
