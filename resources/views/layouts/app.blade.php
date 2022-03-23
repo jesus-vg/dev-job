@@ -52,7 +52,7 @@
 
 		<!-- Page Content -->
 		<main
-			class="my-7 mx-auto w-full max-w-7xl flex-1 px-1"
+			class="my-7 mx-auto w-full max-w-6xl flex-1 px-1 sm:px-3 md:px-4"
 			id="app"
 		>
 			{{ $slot }}
