@@ -18,7 +18,7 @@
 			</p>
 		@endif
 
-		<div class="container mx-auto mt-4 rounded-md bg-white p-3 shadow-md">
+		<div class="mx-auto mt-4 rounded-md bg-white p-3 shadow-md">
 
 			@if (count($vacantes) > 0)
 				<h1 class="my-5 text-center text-gray-700">Vacantes disponibles</h1>
