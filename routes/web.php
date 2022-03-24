@@ -29,23 +29,14 @@ Route::get( '/dashboard', function () {
 
 // doc para rutas tipo resource controller
 // https://laravel.com/docs/9.x/controllers#actions-handled-by-resource-controller
-
 // doc https://aprendible.com/series/laravel-desde-cero/lecciones/route-resource
 // Ruta de vacantes
-Route::resource( 'vacantes', VacanteController::class );
+
 // Route::resource( 'vacantes', VacanteController::class )
 //     ->names( 'vacantes' ) // nombre de las rutas ej. vacantes.index, vacantes.create, vacantes.store, etc
 //     ->parameters( [
 //         'vacantes' => 'vacante', // nombre del parametro que se usa en las rutas ej. /vacantes/{vacante} (vacante es el parametro)
 //     ] );
-
-Route::controller( VacanteController::class )
-    ->prefix( 'vacantes' )
-    ->group( function () {
-        // subida de imagenes
-        Route::post( '/imagen-upload', 'imagenUpload' )->name( 'vacantes.imagen-upload' );
-        Route::post( '/imagen-delete', 'imagenDelete' )->name( 'vacantes.imagen-delete' );
-    } );
 
 Route::middleware( ['auth', 'verified'] )->group( function () {
     Route::get( '/notificaciones', NotificacionController::class )->name( 'notificaciones.index' );
@@ -53,5 +44,17 @@ Route::middleware( ['auth', 'verified'] )->group( function () {
     Route::resource( 'candidatos', CandidatoController::class )->only( [
         'index', 'store',
     ] );
+
+    Route::resource( 'vacantes', VacanteController::class );
+
+    Route::controller( VacanteController::class )
+        ->prefix( 'vacantes' )
+        ->group( function () {
+            // subida de imagenes
+            Route::post( '/imagen-upload', 'imagenUpload' )->name( 'vacantes.imagen-upload' );
+            Route::post( '/imagen-delete', 'imagenDelete' )->name( 'vacantes.imagen-delete' );
+            // Cambio de estado de la vacante
+            Route::post( '/cambiar-estado/{vacante}', 'updateEstado' )->name( 'vacantes.update-estado' );
+        } );
 
 } );
