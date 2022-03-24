@@ -21,6 +21,14 @@ app.component(
 // componete dropzonejs
 app.component("dropzonejs", require("./components/Dropzonejs.vue").default);
 app.component("lista-skills", require("./components/ListaSkills.vue").default);
+app.component(
+	"estado-vacante",
+	require("./components/vacantes/estadoVacante.vue").default
+);
+app.component(
+	"eliminar-vacante",
+	require("./components/vacantes/eliminarVacante.vue").default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
