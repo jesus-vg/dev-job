@@ -203,7 +203,15 @@ class VacanteController extends Controller
      */
     public function destroy( Vacante $vacante )
     {
-        //
+        $vacante->candidatos()->delete();
+        $vacante->delete();
+
+        // eliminamos la carpeta de la vacante
+        Storage::disk( 'public' )->deleteDirectory( 'vacantes/' . $vacante->id );
+
+        return response()->json( [
+            'success' => $vacante->toArray(),
+        ] );
     }
 
     /**
@@ -261,5 +269,27 @@ class VacanteController extends Controller
                 'mensaje' => 'ok',
             ] );
         }
+    }
+
+    /**
+     * Actualiza el estado de la vacante.
+     * @param Vacante $vacante
+     * @return \Illuminate\Http\Response
+     */
+    public function updateEstado(
+        Vacante $vacante,
+        Request $request
+    ) {
+        $request->validate( [
+            'estado' => 'required|in:0,1',
+        ] );
+
+        $vacante->activo = $request->estado;
+        $vacante->save();
+
+        return response()->json( [
+            'mensaje' => 'ok',
+            'estado'  => $vacante->activo,
+        ] );
     }
 }
