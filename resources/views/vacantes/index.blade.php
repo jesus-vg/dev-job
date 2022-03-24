@@ -1,4 +1,11 @@
 <x-app-layout>
+	<x-slot name="styles">
+		<script
+		  src="//cdn.jsdelivr.net/npm/sweetalert2@11"
+		  lazy
+		></script>
+	</x-slot>
+
 	<x-slot name="header">
 		<div class="container mx-auto flex justify-between">
 			<h2 class="text-xl font-semibold leading-tight text-teal-500">
@@ -72,24 +79,23 @@
 													</a>
 												</td>
 												<td class="whitespace-nowrap py-4 px-6 text-sm text-gray-500 dark:text-gray-400">
-													@if ($vacante->activo)
-														<span class="text-green-500">Activo</span>
-													@else
-														<span class="text-red-500">Inactivo</span>
-													@endif
+													<estado-vacante
+														slug-vacante="{{ $vacante->slug }}"
+														:estado="{{ $vacante->activo ? 'true' : 'false' }}"
+													></estado-vacante>
 												</td>
 												<td class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium">
 													<a
 														href="#"
-														class="text-blue-500 hover:underline"
+														class="px-1 text-green-500 hover:underline"
 													>Edit</a>
-													<a
-														href="#"
-														class="text-red-500 hover:underline"
-													>Eliminar</a>
+													<eliminar-vacante
+														slug="{{ $vacante->slug }}"
+														titulo="{{ $vacante->titulo }}"
+													></eliminar-vacante>
 													<a
 														href="{{ route('vacantes.show', $vacante) }}"
-														class="text-teal-500 hover:underline dark:text-blue-500"
+														class="px-1 text-blue-500 hover:underline"
 													>ver</a>
 
 												</td>
