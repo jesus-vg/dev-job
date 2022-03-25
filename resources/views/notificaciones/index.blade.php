@@ -7,6 +7,8 @@
 		</div>
 	</x-slot>
 
+	{{-- TODO las notificaciones se siguen mostrando incluso despues de que la vacante haya sido eliminada --}}
+
 	<div>
 		<div class="container mx-auto mt-4 rounded-md bg-white p-3 shadow-md">
 
