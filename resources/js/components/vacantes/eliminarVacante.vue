@@ -1,7 +1,6 @@
 <template>
 	<button
 		class="px-1 text-red-500 hover:underline"
-		:class="cargando ? 'cursor-not-allowed' : 'cursor-pointer'"
 		@click="eliminarVacante()"
 	>
 		Eliminar
@@ -54,7 +53,10 @@ export default {
 									confirmButton: "btn-primary",
 								},
 							});
-							this.$emit("eliminado");
+							// eliminar del DOM (tbody>tr>td>button)
+							this.$el.parentNode.parentNode.parentNode.removeChild(
+								this.$el.parentNode.parentNode
+							);
 						})
 						.catch((error) => {
 							// console.log(error);
