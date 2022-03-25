@@ -57,6 +57,7 @@ class VacanteController extends Controller
             'ubicaciones'  => $ubicaciones,
             'salarios'     => $salarios,
             'imagenesTemp' => $imagenesTemp,
+            'vacante'      => new Vacante(),
         ] );
     }
 
@@ -176,7 +177,18 @@ class VacanteController extends Controller
      */
     public function edit( Vacante $vacante )
     {
-        //
+        $catagorias   = Categoria::select( 'id', 'nombre' )->get();
+        $experiencias = Experiencia::select( 'id', 'nombre' )->get();
+        $ubicaciones  = Ubicacion::select( 'id', 'nombre' )->get();
+        $salarios     = Salario::select( 'id', 'nombre' )->get();
+
+        return view( 'vacantes.edit', [
+            'categorias'   => $catagorias,
+            'experiencias' => $experiencias,
+            'ubicaciones'  => $ubicaciones,
+            'salarios'     => $salarios,
+            'vacante'      => $vacante,
+        ] );
     }
 
     /**
@@ -216,7 +228,7 @@ class VacanteController extends Controller
 
     /**
      * Metodo para subir imagenes.
-     * Se utiliza unicamente al crear una nueva vacante
+     * Se utiliza con dropzone.js en crear y actualizar vacante.
      *
      * @param Request $request
      */
@@ -224,15 +236,29 @@ class VacanteController extends Controller
     {
         // Validamos los datos del formulario
         $request->validate( [
-            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'imagen'    => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'idVacante' => 'numeric',
         ] );
 
-        $usuario = auth()->user();
+        if ( $request->idVacante == 0 ) {
+            $usuario      = auth()->user();
+            $rutaTemporal = 'temp/' . $usuario->id . '/vacantes/imagenes';
 
-        $rutaTemporal = 'temp/' . $usuario->id . '/vacantes/imagenes';
+            // subimos la imagen al servidor en una carpeta temporal
+            $ruta = $request->file( 'imagen' )->store( $rutaTemporal, 'public' );
+        } else {
+            $rutaImagen = 'vacantes/' . $request->idVacante;
+            $ruta       = $request->file( 'imagen' )->store( $rutaImagen, 'public' );
 
-        // subimos la imagen al servidor en una carpeta temporal
-        $ruta = $request->file( 'imagen' )->store( $rutaTemporal, 'public' );
+            $vacante = Vacante::findOrFail( $request->idVacante );
+
+            // actualizamos las imágenes
+            $imagenes   = json_decode( $vacante->imagen );
+            $imagenes[] = $ruta;
+
+            $vacante->imagen = json_encode( $imagenes );
+            $vacante->save();
+        }
 
         return response()->json( [
             'mensaje'   => 'ok',
@@ -241,7 +267,8 @@ class VacanteController extends Controller
     }
 
     /**
-     * Metodo para eliminar una imagen
+     * Metodo para eliminar una imagen.
+     * Se utiliza con dropzone.js en crear y actualizar vacante.
      *
      * @param Request $request
      */
@@ -250,18 +277,37 @@ class VacanteController extends Controller
         if ( $request->ajax() ) {
 
             $request->validate( [
-                'imagen' => 'required|string',
+                'imagen'    => 'required|string',
+                'idVacante' => 'numeric',
             ] );
 
-            $user = auth()->user();
+            if ( $request->idVacante == 0 ) {
+                $user = auth()->user();
 
-            $pathTemp = explode( '/', $request->imagen );
+                $pathTemp = explode( '/', $request->imagen );
 
-            // validamos que la ruta sea la correcta temp/usuario_id/...
-            if ( $pathTemp[0] == 'temp' && $pathTemp[1] == $user->id ) {
+                // validamos que la ruta sea la correcta temp/usuario_id/...
+                if ( $pathTemp[0] == 'temp' && $pathTemp[1] == $user->id ) {
+                    // eliminamos la imagen del servidor si existe
+                    if ( Storage::disk( 'public' )->exists( $request->imagen ) ) {
+                        Storage::disk( 'public' )->delete( $request->imagen );
+                    }
+                }
+
+            } else {
+
                 // eliminamos la imagen del servidor si existe
                 if ( Storage::disk( 'public' )->exists( $request->imagen ) ) {
                     Storage::disk( 'public' )->delete( $request->imagen );
+
+                    $vacante = Vacante::findOrFail( $request->idVacante );
+
+                    $imagenesVacante = json_decode( $vacante->imagen ); // convertimos el json a array
+                    $imagenesVacante = array_diff( $imagenesVacante, [$request->imagen] ); // eliminamos la imagen del array
+                    // volvemos a indexar el array para que no haya problemas con el json ej. "["imagen1", "imagen2"]" y no "{"1":"imagen1", "2":"imagen2"}"
+                    $imagenesVacante = array_values( $imagenesVacante );
+                    $vacante->imagen = json_encode( $imagenesVacante ); // convertimos el array a json
+                    $vacante->save();
                 }
             }
 
