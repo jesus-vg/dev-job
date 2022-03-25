@@ -80,7 +80,7 @@
 											</td>
 											<td class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium">
 												<a
-													href="#"
+													href="{{ route('vacantes.edit', [$vacante]) }}"
 													class="px-1 text-green-500 hover:underline"
 												>Edit</a>
 												<eliminar-vacante
