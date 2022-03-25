@@ -20,24 +20,44 @@ export default {
 	props: {
 		imagenesTemporales: {
 			type: String,
-			default: [],
+		},
+		// imagenesGuardadas existira solo cuando se esta editando una vacante
+		imagenesGuardadas: {
+			type: String,
+		},
+		idVacante: {
+			type: Number,
+			default: 0,
 		},
 	},
 	data() {
 		return {
-			imagenes: JSON.parse(this.imagenesTemporales),
+			imagenes: JSON.parse(
+				this.imagenesGuardadas
+					? this.imagenesGuardadas
+					: this.imagenesTemporales
+			),
 			myDropzone: null,
 		};
 	},
 	mounted() {
-		// 'http://curso.test/dev-job/vacantes/crear#F51'
+		// http://curso.test/dev-job/
+		const urlBase = window.location.href.split("vacantes")[0];
+
+		// http://curso.test/dev-job/vacantes/imagen-upload?idVacante=4
+		let urlSubida = `${urlBase}vacantes/imagen-upload?idVacante=${this.idVacante}`;
+
+		// http://curso.test/dev-job/vacantes/imagen-delete POST
+		let urlDelete = `${urlBase}vacantes/imagen-delete`;
+
+		// http://curso.test/dev-job/storage/ para ver las imagenes
 		const url = window.location.href.split("vacantes")[0] + "storage/";
 
 		// evento una vez que el DOM esté listo
 		document.addEventListener("DOMContentLoaded", () => {
 			// configurar el dropzone, doc https://www.dropzone.dev/js/
 			this.myDropzone = new Dropzone("#dropzonejs", {
-				url: "./imagen-upload",
+				url: urlSubida,
 				headers: {
 					"X-CSRF-TOKEN": document
 						.querySelector('meta[name="csrf-token"]')
@@ -81,10 +101,11 @@ export default {
 				if (file.nameServer) {
 					const params = {
 						imagen: file.nameServer,
+						idVacante: this.idVacante,
 					};
 
 					axios
-						.post("./imagen-delete", params)
+						.post(urlDelete, params)
 						.then((res) => {
 							// eliminar la imagen del array de imagenes
 							this.imagenes = this.imagenes.filter(
@@ -119,7 +140,7 @@ export default {
 				this.imagenes.push(response.path_temp);
 			});
 
-			this.myDropzone.on("error", function (file, response) {
+			this.myDropzone.on("error", (file, response) => {
 				document.getElementById("file-no-valid").innerHTML =
 					response.errors?.imagen.join("<br>") ?? response;
 
@@ -131,7 +152,11 @@ export default {
 			// https://github.com/dropzone/dropzone/pull/2003/files/628d30907d674871f49cf2ce822db90d07997a82
 			this.imagenes.forEach((imagen, i) => {
 				// imagen = temp/1/vacantes/imagenes/0u5UH9NOTfr99z5kbW9ivcqgsGtQ6C0lxnPWN0KP.jpg
-				const nombreImagen = imagen.split("/")[4];
+				// imagenGuardada = vacantes/1/0u5UH9NOTfr99z5kbW9ivcqgsGtQ6C0lxnPWN0KP.jpg
+				const nombreImagen =
+					this.idVacante === 0
+						? imagen.split("/")[4]
+						: imagen.split("/")[2];
 
 				let mockFile = {
 					name: nombreImagen,
