@@ -52,13 +52,19 @@
 	para mas detalles ver
 	https://www.udemy.com/course/curso-laravel-crea-aplicaciones-y-sitios-web-con-php-y-mvc/learn/lecture/20329845#questions --}}
 <script>
+ // TODO: agregar aspecto de la imagen en las miniaturas, agregar funciones para cambiar imagen con las flechas del teclado
  const openModal = () => {
   document.getElementById("lightbox").style.display = "block";
- }
+  //   agregar esto para que no se pueda hacer scroll
+  document.body.style.overflow = "hidden";
+ };
+
 
  const closeModal = () => {
   document.getElementById("lightbox").style.display = "none";
- }
+  //   agregar esto para que se pueda hacer scroll
+  document.body.style.overflow = "auto";
+ };
 
  const plusSlides = (n) => {
   showSlides(slideIndex += n);
@@ -97,17 +103,4 @@
 
  let slideIndex = 1;
  showSlides(slideIndex);
-
- const modal = document.getElementById("lightbox");
- //  evento para hacer scroll en el modal
- modal.addEventListener("wheel", (e) => {
-  e.preventDefault();
-  if (e.deltaY < 0) {
-   plusSlides(1);
-  } else {
-   plusSlides(-1);
-  }
- }, {
-  passive: false
- });
 </script>
