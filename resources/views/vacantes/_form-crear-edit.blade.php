@@ -33,21 +33,11 @@
 				>Categoria</label>
 			</div>
 			<div class="md:w-2/3">
-				<select
-					id="categoria"
+				<v-select
 					name="categoria"
-					class="@error('categoria') border-red-500 @enderror w-full rounded-lg border bg-gray-700 text-sm text-gray-300 placeholder-gray-400 focus:border-gray-500 focus:ring-gray-500"
-				>
-					<option value="">- Selecciona una categoria -</option>
-					@foreach ($categorias as $categoria)
-						<option
-							value="{{ $categoria->id }}"
-							{{ old('categoria', $vacante->categoria_id) == $categoria->id ? 'selected' : '' }}
-						>
-							{{ $categoria->nombre }}
-						</option>
-					@endforeach
-				</select>
+					data="{{ json_encode($categorias) }}"
+					value="{{ old('categoria', $vacante->categoria_id) }}"
+				></v-select>
 				@error('categoria')
 					<x-mensaje-error-input :message="$message" />
 				@enderror
@@ -61,19 +51,11 @@
 				>Experiencia</label>
 			</div>
 			<div class="md:w-2/3">
-				<select
-					id="experiencia"
+				<v-select
 					name="experiencia"
-					class="@error('experiencia') border-red-500 @enderror w-full rounded-lg border bg-gray-700 text-sm text-gray-300 placeholder-gray-400 focus:border-gray-500 focus:ring-gray-500"
-				>
-					<option value="">- Selecciona una categoria -</option>
-					@foreach ($experiencias as $experiencia)
-						<option
-							value="{{ $experiencia->id }}"
-							{{ old('experiencia', $vacante->experiencia_id) == $experiencia->id ? 'selected' : '' }}
-						>{{ $experiencia->nombre }}</option>
-					@endforeach
-				</select>
+					data="{{ json_encode($experiencias) }}"
+					value="{{ old('experiencia', $vacante->experiencia_id) }}"
+				></v-select>
 				@error('experiencia')
 					<x-mensaje-error-input :message="$message" />
 				@enderror
@@ -87,19 +69,11 @@
 				>Ubicación</label>
 			</div>
 			<div class="md:w-2/3">
-				<select
-					id="ubicacion"
+				<v-select
 					name="ubicacion"
-					class="@error('ubicacion') border-red-500 @enderror w-full rounded-lg border bg-gray-700 text-sm text-gray-300 placeholder-gray-400 focus:border-gray-500 focus:ring-gray-500"
-				>
-					<option value="">- Selecciona una ubicación -</option>
-					@foreach ($ubicaciones as $ubicacion)
-						<option
-							value="{{ $ubicacion->id }}"
-							{{ old('ubicacion', $vacante->ubicacion_id) == $ubicacion->id ? 'selected' : '' }}
-						>{{ $ubicacion->nombre }}</option>
-					@endforeach
-				</select>
+					data="{{ json_encode($ubicaciones) }}"
+					value="{{ old('ubicacion', $vacante->ubicacion_id) }}"
+				></v-select>
 				@error('ubicacion')
 					<x-mensaje-error-input :message="$message" />
 				@enderror
@@ -113,19 +87,11 @@
 				>Salario</label>
 			</div>
 			<div class="md:w-2/3">
-				<select
-					id="salario"
+				<v-select
 					name="salario"
-					class="@error('salario') border-red-500 @enderror w-full rounded-lg border bg-gray-700 text-sm text-gray-300 placeholder-gray-400 focus:border-gray-500 focus:ring-gray-500"
-				>
-					<option value="">- Selecciona un rango -</option>
-					@foreach ($salarios as $salario)
-						<option
-							value="{{ $salario->id }}"
-							{{ old('salario', $vacante->salario_id) == $salario->id ? 'selected' : '' }}
-						>{{ $salario->nombre }}</option>
-					@endforeach
-				</select>
+					data="{{ json_encode($salarios) }}"
+					value="{{ old('salario', $vacante->salario_id) }}"
+				></v-select>
 				@error('salario')
 					<x-mensaje-error-input :message="$message" />
 				@enderror
