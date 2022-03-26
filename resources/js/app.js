@@ -29,6 +29,7 @@ app.component(
 	"eliminar-vacante",
 	require("./components/vacantes/eliminarVacante.vue").default
 );
+app.component("v-select", require("./components/vacantes/vSelect.vue").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
