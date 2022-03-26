@@ -65,12 +65,12 @@
 
 /* Estilos para la seccion desplegable (contenedor de los options) */
 .vs__dropdown-menu {
-	@apply text-sm max-h-52 overflow-y-auto absolute shadow-lg scroll-custom overflow-x-hidden snap-y;
+	@apply text-sm max-h-52 overflow-y-auto absolute shadow-lg scroll-custom overflow-x-hidden snap-y z-10;
 }
 
 /* estilos para los option */
 .vs__dropdown-option {
-	@apply cursor-pointer leading-normal whitespace-nowrap px-2 snap-start;
+	@apply cursor-pointer leading-loose whitespace-nowrap px-2 snap-start;
 }
 
 /* estilos hover en los options */
