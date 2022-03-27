@@ -42,20 +42,15 @@ class VacanteController extends Controller
      */
     public function create()
     {
-        $catagorias   = Categoria::select( 'id', 'nombre' )->get();
-        $experiencias = Experiencia::select( 'id', 'nombre' )->get();
-        $ubicaciones  = Ubicacion::select( 'id', 'nombre' )->get();
-        $salarios     = Salario::select( 'id', 'nombre' )->get();
-
         // mostramos las imagenes que ya se han subido en el formulario (carpeta temporal)
         $rutaTemporal = 'temp/' . auth()->user()->id . '/vacantes/imagenes';
         $imagenesTemp = Storage::disk( 'public' )->files( $rutaTemporal );
 
         return view( 'vacantes.create', [
-            'categorias'   => $catagorias,
-            'experiencias' => $experiencias,
-            'ubicaciones'  => $ubicaciones,
-            'salarios'     => $salarios,
+            'categorias'   => Categoria::select( 'id', 'nombre' )->get(),
+            'experiencias' => Experiencia::select( 'id', 'nombre' )->get(),
+            'ubicaciones'  => Ubicacion::select( 'id', 'nombre' )->get(),
+            'salarios'     => Salario::select( 'id', 'nombre' )->get(),
             'imagenesTemp' => $imagenesTemp,
             'vacante'      => new Vacante(),
         ] );
@@ -177,16 +172,11 @@ class VacanteController extends Controller
      */
     public function edit( Vacante $vacante )
     {
-        $catagorias   = Categoria::select( 'id', 'nombre' )->get();
-        $experiencias = Experiencia::select( 'id', 'nombre' )->get();
-        $ubicaciones  = Ubicacion::select( 'id', 'nombre' )->get();
-        $salarios     = Salario::select( 'id', 'nombre' )->get();
-
         return view( 'vacantes.edit', [
-            'categorias'   => $catagorias,
-            'experiencias' => $experiencias,
-            'ubicaciones'  => $ubicaciones,
-            'salarios'     => $salarios,
+            'categorias'   => Categoria::select( 'id', 'nombre' )->get(),
+            'experiencias' => Experiencia::select( 'id', 'nombre' )->get(),
+            'ubicaciones'  => Ubicacion::select( 'id', 'nombre' )->get(),
+            'salarios'     => Salario::select( 'id', 'nombre' )->get(),
             'vacante'      => $vacante,
         ] );
     }
