@@ -16,7 +16,6 @@ class Vacante extends Model
      */
     protected $fillable = [
         'titulo',
-        'slug',
         'descripcion',
         'categoria_id',
         'experiencia_id',
@@ -43,6 +42,7 @@ class Vacante extends Model
      *
      * @return array
      * @see https://github.com/cviebrock/eloquent-sluggable
+     * @see https://github.com/cviebrock/eloquent-sluggable#onupdate -> para generar nuevo slug cuando se actualiza
      */
     public function sluggable(): array
     {
