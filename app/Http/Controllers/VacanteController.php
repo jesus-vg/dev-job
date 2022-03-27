@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\VacanteStoreUpdateRequest;
-use App\Models\Categoria;
-use App\Models\Experiencia;
 use App\Models\Salario;
-use App\Models\Ubicacion;
 use App\Models\Vacante;
+use App\Models\Categoria;
+use App\Models\Ubicacion;
+use App\Models\Experiencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\VacanteStoreUpdateRequest;
 
 class VacanteController extends Controller
 {
 
     public function __construct()
     {
-        // indicamos que solo los usuarios autenticados y verificados pueden acceder a los metodos de este controlador
-        $this->middleware( ['auth', 'verified'] );
+        // https://laravel.com/docs/9.x/authorization#authorizing-resource-controllers
+        $this->authorizeResource( Vacante::class, 'vacante' );
     }
 
     /**
@@ -60,8 +60,7 @@ class VacanteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
     public function store( VacanteStoreUpdateRequest $request )
@@ -124,11 +123,10 @@ class VacanteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Vacante $vacante
-     *
-     * @return \Illuminate\Http\Response
-     *
      * @link sesiones https://laravel.com/docs/9.x/session#retrieving-data
+     *
+     * @param  \App\Models\Vacante         $vacante
+     * @return \Illuminate\Http\Response
      */
     public function show( Vacante $vacante )
     {
@@ -143,8 +141,7 @@ class VacanteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Vacante $vacante
-     *
+     * @param  \App\Models\Vacante         $vacante
      * @return \Illuminate\Http\Response
      */
     public function edit( Vacante $vacante )
@@ -161,23 +158,36 @@ class VacanteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Vacante      $vacante
-     *
+     * @param  \Illuminate\Http\Request    $request
+     * @param  \App\Models\Vacante         $vacante
      * @return \Illuminate\Http\Response
      */
     public function update(
-        Request $request,
+        VacanteStoreUpdateRequest $request,
         Vacante $vacante
     ) {
-        //
+        // no es necesario guardar la imagen ya que se guarda cuando se sube o elimina desde el formulario (dropzone)
+        $vacante->update( [
+            'titulo'         => $request->titulo,
+            'descripcion'    => $request->descripcion,
+            'categoria_id'   => $request->categoria,
+            'experiencia_id' => $request->experiencia,
+            'ubicacion_id'   => $request->ubicacion,
+            'salario_id'     => $request->salario,
+            'skills'         => $request->skills,
+        ] );
+
+        $vacante->save();
+
+        return redirect()
+            ->route( 'vacantes.index' )
+            ->with( 'success', 'Vacante actualizada correctamente' );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Vacante $vacante
-     *
+     * @param  \App\Models\Vacante         $vacante
      * @return \Illuminate\Http\Response
      */
     public function destroy( Vacante $vacante )
@@ -286,7 +296,7 @@ class VacanteController extends Controller
 
     /**
      * Actualiza el estado de la vacante.
-     * @param Vacante $vacante
+     * @param  Vacante                     $vacante
      * @return \Illuminate\Http\Response
      */
     public function updateEstado(
