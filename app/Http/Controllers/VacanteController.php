@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VacanteStoreUpdateRequest;
 use App\Models\Categoria;
 use App\Models\Experiencia;
 use App\Models\Salario;
@@ -63,32 +64,8 @@ class VacanteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store( Request $request )
+    public function store( VacanteStoreUpdateRequest $request )
     {
-        $request->validate(
-            [
-                'titulo'      => 'required|string|max:255',
-                'descripcion' => 'required|string|min:50',
-                'categoria'   => 'required|integer',
-                'experiencia' => 'required|integer',
-                'ubicacion'   => 'required|integer',
-                'salario'     => 'required|integer',
-                'imagen'      => 'required|json|min:25',
-                'skills'      => 'required|string|min:5|max:255',
-            ],
-            [
-                'imagen.required' => 'Seleccione una imagen',
-                // Personalizamos el mensaje de error para cuando los caracteres sean menores a 25
-                // se valida en caso de que se manipule el json ya que un valor esperado es (minimo 1 archivo):
-                // "[
-                //         "temp/1/vacantes/imagenes/xzicLDofoUJtaSZ2H9APwxI3ublCxWi46G6tGi9A.png",
-                //         "temp/1/vacantes/imagenes/YVw0rxd1CqS0A16EiiEiBDYdoqBLJxa1aGB0NAu5.png"
-                // ]"
-                'imagen.min'      => 'Seleccione una imagen',
-                'skills.min'      => 'Seleccione minimo 3 skills',
-            ]
-        );
-
         // guardamos la vacante y recuperamos los datos de la vacante incluyendo el id generado
         $vacanteCreada = auth()->user()->vacantes()->create( [
             'titulo'         => $request->titulo,
