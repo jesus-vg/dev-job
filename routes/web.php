@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VacanteController;
 use App\Http\Controllers\CandidatoController;
 use App\Http\Controllers\NotificacionController;
-use App\Http\Controllers\VacanteController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
