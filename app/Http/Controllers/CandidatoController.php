@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Candidato;
 use App\Models\Vacante;
-use App\Notifications\NuevoCandidato;
+use App\Models\Candidato;
 use Illuminate\Http\Request;
+use App\Notifications\NuevoCandidato;
 
 class CandidatoController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      * @link https://laravel.com/docs/9.x/pagination#appending-query-string-values
+     *
+     * @param  \Illuminate\Http\Request    $request
+     * @return \Illuminate\Http\Response
      */
     public function index( Request $request )
     {
@@ -21,7 +22,9 @@ class CandidatoController extends Controller
             'slugVacante' => 'required|string',
         ] );
 
-        $vacante = Vacante::whereSlug( $request->slugVacante )->firstOrFail()->first();
+        $vacante = Vacante::whereSlug( $request->slugVacante )->firstOrFail();
+
+        $this->authorize( 'update', $vacante );
 
         $candidatos = Candidato::select( 'id', 'nombre', 'email', 'cv', 'created_at' )
             ->whereVacanteId( $vacante->id )
@@ -47,11 +50,10 @@ class CandidatoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Illuminate\Http\Response
-     *
      * @link https://laravel.com/docs/9.x/session#retrieving-data
+     *
+     * @param  \Illuminate\Http\Request    $request
+     * @return \Illuminate\Http\Response
      */
     public function store( Request $request )
     {
@@ -94,7 +96,7 @@ class CandidatoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Candidato  $candidato
+     * @param  \App\Models\Candidato       $candidato
      * @return \Illuminate\Http\Response
      */
     public function show( Candidato $candidato )
@@ -105,7 +107,7 @@ class CandidatoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Candidato  $candidato
+     * @param  \App\Models\Candidato       $candidato
      * @return \Illuminate\Http\Response
      */
     public function edit( Candidato $candidato )
@@ -116,8 +118,8 @@ class CandidatoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Candidato  $candidato
+     * @param  \Illuminate\Http\Request    $request
+     * @param  \App\Models\Candidato       $candidato
      * @return \Illuminate\Http\Response
      */
     public function update(
@@ -130,7 +132,7 @@ class CandidatoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Candidato  $candidato
+     * @param  \App\Models\Candidato       $candidato
      * @return \Illuminate\Http\Response
      */
     public function destroy( Candidato $candidato )
