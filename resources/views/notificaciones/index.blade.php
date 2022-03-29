@@ -53,7 +53,7 @@
 												</td>
 												<td class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium">
 													<a
-														href="#"
+														href="{{ route('candidatos.index', ['slugVacante' => basename($notificacion->data['url'])]) }}"
 														class="text-blue-500 hover:underline"
 													>Ver candidatos</a>
 												</td>
